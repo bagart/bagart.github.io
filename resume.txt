@@ -1,0 +1,189 @@
+Baltaev.Artur@gmail.com
+Architect Web Developer
+Senior Full-Stack Engineer
+SRE, DBA, HighTraffic, BigData
+International #Remote #Relocate
+as an international remote contractor (personal or b2b)
+SKILLS
+Reengineering of Core TOP-5 global site
+Tech Leading, Team Leading of 10+ Developers
+Solo Backend dev of huge B2B/B2C projects
+High-Traffic, Big-Data, SRE, DBA, Architect, Audit
+Language: PHP 3 => 8.5, JavaScript/TS, Perl, SQL
+Hard DB skills: *SQL, NoSQL, GCloudDB (BigQuery, Spanner), MQ, Pub/Sub, Fulltext, Pl/PgSQL, ClickHouse, ElasticSearch, Sphinx, etc
+Backend frameworks: Laravel/Lumen, Symfony, node.js, MediaWiki, onPHP, Yii, *CRM, *CMS
+Frontend: aSync SPA, React.js, Vue.js, PWA
+Patterns, principles: SOLID, GRASP, DDD, CQRS+ES
+API (building and using): geo, social, google CSE, oAuth, Auth0, AD RTB, mailing, payment(Stripe, PayPal), int/ext billing(Paddle), SOAP, gRPC, JsonAPI
+Admin: Linux, Docker, Kubernetes, AWS, GCloud, Azure
+Testing: unit, functional, stress, profiling, security audit
+EDUCATION
+Chuvash State University
+Degree: Bachelor
+Faculty of Economics
+Major: Banks and banking
+SUMMARY
+Languages:
+English — Advanced
+Russian — fluent
+CV: Actual CV
+LinkedIn
+Code: github.com/bagart
+@BAGArt
+Tel: +7 (926) 331-95-57
+EXPERIENCE
+Big medical CRM, US (NDA)
+March 2022 — Nov 2025
+Senior backend developer
+Big medicine company
+Form:
+- Remote work, Direct full-day contract work - Certified by HIPAA licence
+- Deep divide into medtech rules/logic/taxonomy
+Tasks:
+- Full Architect and Development of Great Facet Search Engine 😊
+- BigData with hard SQL in BigQuery, Architect, RND
+- Optimizations, Clastering, Supporting (officially taxonomy refreshed every year)
+- Thousands SQL’s(different medicine rules) processed by queue
+- Typical SQL is 30-200 kb per case, Deep and/or chains, positive-negative rules
+- Post-processing of SQL results data (1kkk lines in raw)
+- Aggregate, normalize, provide by API and supporting of results
+- from expensive GCloud BigQuery, external ML services to distributed GCloud Spanner
+- Cloud IAM Permission layers to data by columns
+Stack:
+- PHP7 => PHP 8.4, Laravel, MSA with Gateway, Kubernetes, MQ, swagger
+- GCloud (BigQuery, Spanner, PubSub), Github, Jira, Confluence
+World TOP-5 global site (NDA), US (agency: speedandfunction)
+Dec 2019 — Jul 2020
+Senior backend developer
+Most popular site ( world TOP-5 global site by visitors, NDA )
+Form:
+- limited architect work
+- All processes in English
+Tasks:
+- Deep core decoupling (GRASP, SOLID) and reengineering: Actions, Typed* Content, Pages, Language*, Searcher (different engines), API, Emailer, extension integration
+- Add new SQL DB support (self-hosted installation, extensions)
+- Code review, Coverage with PHPUnit test. All commits with public review
+- Open Source deprecation processes and documentation
+- Development of new services
+Stack:
+- PHP7.2, Universal *SQL, PHPUnit, Docker, Phabracator, Gerrit
+Manychat.com, USA
+February 2019— July 2019
+Senior backend developer
+http://manychat.com - Visual bot builder for Facebook Messenger
+Form:
+- limited architect work
+Tasks:
+- Reengineering core of backend (message processor and queue from FB, etc)
+Instruments:
+- PHP, Yii, Codeception
+- *SQL
+- OpenApi (React)
+Booking b2b platform, International
+Aug 2020 — March 2022
+Team Lead, Senior backend developer
+International startup: Booking service for b2b by subscribing
+Form:
+- Remote work, Direct contract work
+- All processes in English
+- Work without technical details (by markups and discuss)
+- Single backend development from start to lunch
+Tasks:
+- Development a backend MSP platform from start to MVP by markups and discuss
+- REST API for SPA with documentation (Postman)
+- API tests
+- Full MicroServiceArchitecture (MSA) with separated DB and API logic on the backend (aggregation, MSA-transaction)
+Instruments:
+- PHP8, PostgreSQL, Laravel, Full MSA, Kubernetes, MQ, Gitlab CI, Auth0, Paddle, Sanctum
+Many other limited projects from USA, UK, South Africa
+Mostly: PHP (Laravel, Symfony) or FullStack (Vue.JS, React.JS)
+Gruzer
+December 2017— December 2018
+Senior architect developer, Senior backend developer, Team leader
+http://gruzer.ru - logistic auction and taxi (B2B, B2C)
+Form: Remote Project work with Team
+Tasks:
+- Development a new logistic platform from start to finish: auction (B2B, B2C)
+- Support, optimize and extend exists project; Security, CICD, Performance audit
+- Preparing technical documentation, schemasCode review, planning, team leader, unit tests
+- Technical Architect
+➢ Full SOA(Microservice Architect) with async service-bus (queued), CRUD, ACL
+➢ SPA with pushes (live update) and notifications on changes
+➢ SOA API: Single Mobile and SPA, Open-API, Swagger
+- Develop Business for new project:
+➢ Auction: Bookkeeping, Bidding, group messaging
+➢ Searches: deep automatic filters, presets
+➢ Logistic: maps, estimates, documents
+➢ Billing: Checkout, Processing, Payment, Balance, B2B, B2C, Multicurrency
+➢ Notification: Multi channel, multi user, configured
+Instruments:
+- Laravel, Bootstrap, SPA (CRUD), Socket.io
+- PHP, JS(Node.js), Postgresql (PgSQL), Websocket, Redis
+- SOA-API: Open-API with documentation (Swagger)
+- API: Yandex Maps, Google maps, OpenStreet Maps, oAuth2, S3+OpenStack, cdn, Firebase(Cloud messaging), sms/mail/etc
+- Gitlab, CICD, Docker, Kubernetes, Minikube, Git
+Bionika
+June 2016— April 2017
+Senior fullstack developer for a new private service
+Medicine company
+Form: Remote work, Full alone architect, development (Frontend, Backend, DBA) and DevOps
+Tasks:
+- Developed new projects from start to finish
+- Developed filters which ensured flexible and intelligent search (based on elasticsearch)
+- Data sync (public procurement)
+Instruments:
+- Laravel 5.3, AdminLTE (Bootstrap), Vue.js, PHP 7, JS, PostgreSQL
+- Elasticsearch 2.4 as primary DB for content, BeanstalkD, Redis, Docker
+- API: maps, public procurement of Russia (tenders like zakupki.gov.ru)
+Taxi-Angel.ru, Moscow
+October 2015 — March 2016
+Senior fullstack web developer
+International taxi service
+Form:
+- Remote work without team
+- Project work
+Tasks:
+- Developed mobile API from start to finish
+- Support of existing projects(bug fixing)
+- DB optimization
+Project:
+- Panel data with call and order statistics, admin panel
+- RESTful Mobile API for working project
+Instruments:
+- PHP 5.4=>5.6, JS, PostgreSQL, PL/pgSQL, Laravel, AdminLTE, Highcharts, LXC
+- API: maps, Asterisk
+IMHOnet.ru, Moscow
+October 2014 — October 2015
+Senior developer (backend)
+HighLoad recommendation service
+Form:
+- Office work
+- Team of 15 +/- people (IT)
+Tasks:
+- HighLoad optimization
+- Support and development site
+- RTB data sync, recommendation based on AD profiling and targeting for new/unregistered users
+- New import data models (external sources)
+Instruments:
+- PHP: corp. MVC framework, MQ dispatchers, API development and use
+- DB: MySQL, Sphinx, ElasticSearch
+- API: AD RTB (Facetz), content-providers, mailing services (Mandrill, ExpertSender), oAuth
+- jira, git, phabricator, composer, github, LXC, deploy, ELK
+Rabota.ru (RDW-media), Moscow
+November 2010 — August 2012
+Web developer
+high traffic recruiting portal. Local TOP3
+Form:
+- Office work
+- Team of 15 +/- people (IT)
+Tasks:
+- HighLoad optimization: horizontal scaling, DB optimization(SQL, NoSQL, indexes, queries), caching.
+- Sync with main billing service, online payment API, paid services
+- Statistics aggregation (salaries by tags, payment)
+Instruments:
+- php5, OOP/MVC, onPHP, PostgreSQL, PL/PgSQL, Sphinx
+- API: online payment (robokassa), billing (XML)
+- JavaScript, Prototype => jQuery, AJAX, payment API(robox), oAuth
+- svn => git, trac => redmine
+----------------------------------
+Full resume: goo.gl/4oTQGW Keywords: #cv #remote #resume #SeniorDeveloper #ArchitectDeveloper #SRE #TechLead #TeamLead #CTO #CIO #FullStack #Full-Stack #Backend #Developer #Programmer #CloudDeveloper #HighLoad #HighTraffi c #HighAvailability #DBA #Distributed #PHP #BigQuery #Spanner #DynamoDB #JS #javascript #Laravel #Symfony #React #ReactJs #Vue #VueJs #SOA #MSA #microservice #sql #NoSQL #PlPgsql #Postgres #MySQL #ElasticSearch #Sphinx #restApi #RESTFul #REST #PubSub #Kafka #Redis #Firebase #RabbitMQ #ZeroMQ #Beanstalk #Swagger #Docker #Kubernetes #ELK #CICD #Teamwork: #Jira #redmine #git #gitlab #github #BitBucket #svn #subversion #Confl uence #Phabricator

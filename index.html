@@ -1,0 +1,2469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Artur Baltaev — Architect Web Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+          rel="stylesheet"/>
+    <script type="text/javascript"
+            src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=e5xsw_eFlxnYUPvmMjecnH5HLuVvRIyLW5X-gqeICz0O_bA9RhInq9htdG8b_z6A"
+            charset="UTF-8"></script>
+    <style>
+        :root {
+            --bg: #0a0a12;
+            --surface: rgba(255, 255, 255, 0.05);
+            --surface-hover: rgba(255, 255, 255, 0.09);
+            --border: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(99, 102, 241, 0.4);
+            --primary: #6366f1;
+            --primary-dim: rgba(99, 102, 241, 0.18);
+            --primary-glow: rgba(99, 102, 241, 0.5);
+            --cyan: #22d3ee;
+            --cyan-dim: rgba(34, 211, 238, 0.15);
+            --purple: #a855f7;
+            --text: #e8eef4;
+            --muted: #94a3b8;
+            --nav-h: 62px;
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.65;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── BACKGROUND ── */
+        .bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse 80% 100% at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+            radial-gradient(ellipse 60% 80% at 92% 15%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
+            radial-gradient(ellipse 50% 60% at 80% 85%, rgba(34, 211, 238, 0.08) 0%, transparent 50%),
+            radial-gradient(ellipse 40% 40% at 50% 50%, rgba(99, 102, 241, 0.04) 0%, transparent 60%);
+        }
+
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 15%, transparent 70%);
+        }
+
+        /* ── SCROLL PROGRESS ── */
+        #scroll-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            z-index: 2000;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--purple) 50%, var(--cyan) 100%);
+            width: 0%;
+            transition: width 0.15s ease-out;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: var(--nav-h);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            transition: background 0.3s, backdrop-filter 0.3s, border-bottom 0.3s, box-shadow 0.3s;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 18, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--primary), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.15rem;
+            align-items: center;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-links::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            padding: 0.38rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        .lang-switch {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 0.32rem 0.65rem;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* ── SECTIONS (Full-page slides) ── */
+        .slide {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            padding: calc(var(--nav-h) + 4rem) 2rem 5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+
+        .slide.wide {
+            max-width: none;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .slide-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            width: 100%;
+        }
+
+        .sec-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--primary);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .sec-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 0.5rem;
+        }
+
+        .sec-title .accent {
+            background: linear-gradient(135deg, var(--primary), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sec-divider {
+            width: 2.5rem;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--cyan));
+            border-radius: 2px;
+            margin-bottom: 2.5rem;
+        }
+
+        /* ── HERO ── */
+        #hero {
+            max-width: none;
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: var(--nav-h);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-eyebrow {
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .otw-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.35);
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #4ade80;
+            letter-spacing: 0.5px;
+        }
+
+        .otw-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 6px #4ade80;
+            animation: pulse-dot 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(0.75);
+            }
+        }
+
+        .hero-nomad {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.3rem 0.5rem;
+            margin-bottom: 2rem;
+            padding: 0.65rem 1rem;
+            border-left: 2px solid rgba(99, 102, 241, 0.4);
+            background: rgba(99, 102, 241, 0.04);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .nomad-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.82rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .nomad-item em {
+            font-style: normal;
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        .nomad-ico {
+            font-size: 0.95rem;
+        }
+
+        .nomad-sep {
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 0.8rem;
+        }
+
+        .hero-name-row {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 700;
+            line-height: 1.0;
+            letter-spacing: -2px;
+            margin-bottom: 0;
+        }
+
+        .hero-name .grad {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--purple) 45%, var(--cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-handle {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 700;
+            line-height: 1.0;
+            letter-spacing: -2px;
+            color: rgba(255, 255, 255, 0.12);
+            text-decoration: none;
+            transition: color 0.25s;
+            flex-shrink: 0;
+        }
+
+        .hero-handle:hover {
+            color: var(--cyan);
+        }
+
+        .hero-title {
+            font-size: clamp(0.95rem, 2vw, 1.15rem);
+            color: var(--muted);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-title strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .htag {
+            padding: 0.28rem 0.7rem;
+            background: var(--primary-dim);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: 20px;
+            font-size: 0.77rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .hero-ctas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.65rem 1.35rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-ghost {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-ghost:hover {
+            background: var(--surface-hover);
+            transform: translateY(-2px);
+        }
+
+        .hero-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            min-width: 240px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(34, 211, 238, 0.05) 100%);
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .c-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.82rem;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+            line-height: 1.3;
+        }
+
+        .c-item:hover {
+            color: var(--text);
+        }
+
+        .c-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .hero-photo-wrap {
+            display: flex;
+            justify-content: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 0.25rem;
+        }
+
+        .hero-photo {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center top;
+            border: 2px solid var(--border);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2), 0 4px 24px rgba(0, 0, 0, 0.4);
+            transition: box-shadow 0.3s;
+        }
+
+        .hero-photo.otw {
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.5), 0 4px 24px rgba(34, 197, 94, 0.2);
+        }
+
+        .hero-stat {
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-lbl {
+            font-size: 0.72rem;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 1.1rem;
+        }
+
+        .sk-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.35rem 1.5rem;
+            transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s, background 0.25s;
+            backdrop-filter: blur(8px);
+        }
+
+        .sk-card:hover {
+            border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.12);
+        }
+
+        .sk-head {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 0.7rem;
+        }
+
+        .sk-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+        }
+
+        .sk-tag {
+            padding: 0.18rem 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 4px;
+            font-size: 0.77rem;
+            color: var(--text);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary) 0%, var(--cyan) 60%, transparent 100%);
+            border-radius: 1px;
+        }
+
+        .tl-item {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
+        .tl-dot {
+            position: absolute;
+            left: -2.415rem;
+            top: 1.4rem;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 2px solid var(--bg);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
+        }
+
+        .tl-dot.dim {
+            background: var(--muted);
+            box-shadow: none;
+        }
+
+        .exp-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .exp-card.clickable {
+            cursor: pointer;
+        }
+
+        .exp-card.clickable:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 24px rgba(99, 102, 241, 0.08);
+        }
+
+        .exp-card.open {
+            border-color: rgba(99, 102, 241, 0.45);
+            box-shadow: 0 4px 28px rgba(99, 102, 241, 0.12);
+        }
+
+        .exp-head {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0.5rem;
+            align-items: start;
+            padding: 1.05rem 1.3rem;
+        }
+
+        .exp-co {
+            font-weight: 600;
+            font-size: 0.93rem;
+            color: var(--text);
+        }
+
+        .exp-role {
+            font-size: 0.8rem;
+            color: var(--cyan);
+            margin-top: 0.15rem;
+        }
+
+        .exp-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.2rem;
+        }
+
+        .exp-period {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .exp-chevron {
+            color: var(--muted);
+            font-size: 0.65rem;
+            transition: transform 0.3s;
+        }
+
+        .exp-card.open .exp-chevron {
+            transform: rotate(180deg);
+        }
+
+        .exp-stack {
+            padding: 0 1.3rem 0.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
+
+        .st-tag {
+            padding: 0.14rem 0.42rem;
+            background: var(--cyan-dim);
+            border: 1px solid rgba(34, 211, 238, 0.18);
+            border-radius: 3px;
+            font-size: 0.7rem;
+            color: var(--cyan);
+        }
+
+        .exp-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            border-top: 1px solid transparent;
+        }
+
+        .exp-card.open .exp-body {
+            max-height: 520px;
+            border-top-color: var(--border);
+        }
+
+        .exp-body-inner {
+            padding: 0.9rem 1.3rem 1rem;
+        }
+
+        .exp-body-inner ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .exp-body-inner li {
+            font-size: 0.81rem;
+            color: var(--muted);
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .exp-body-inner li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        .edu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.1rem;
+        }
+
+        .edu-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.4rem;
+        }
+
+        .edu-card.highlight {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(99, 102, 241, 0.06);
+        }
+
+        .edu-card h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .edu-card h3.grad {
+            background: linear-gradient(135deg, var(--primary), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .edu-card p {
+            font-size: 0.81rem;
+            color: var(--muted);
+            margin-bottom: 0.2rem;
+        }
+
+        .uni-banner {
+            grid-column: 1 / -1;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .uni-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+            rgba(139, 0, 0, 0.12) 0%,
+            rgba(180, 120, 0, 0.07) 40%,
+            rgba(99, 102, 241, 0.06) 100%);
+            pointer-events: none;
+        }
+
+        .uni-banner-top {
+            display: flex;
+            align-items: stretch;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .uni-crest {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.75rem 2rem;
+            background: rgba(139, 0, 0, 0.1);
+            border-right: 1px solid rgba(139, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+
+        .uni-crest-circle {
+            width: 108px;
+            height: 108px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(200, 60, 60, 0.35), 0 0 0 6px rgba(200, 60, 60, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .uni-header {
+            padding: 1.4rem 1.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.35rem;
+        }
+
+        .uni-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1rem, 2.2vw, 1.3rem);
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.25;
+        }
+
+        .uni-name-sub {
+            font-size: 0.78rem;
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        .uni-degree-row {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-top: 0.25rem;
+        }
+
+        .uni-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.22rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.74rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .uni-badge.degree {
+            background: rgba(139, 0, 0, 0.15);
+            border: 1px solid rgba(200, 50, 50, 0.3);
+            color: #e07070;
+        }
+
+        .uni-badge.year {
+            background: rgba(180, 140, 0, 0.12);
+            border: 1px solid rgba(200, 160, 0, 0.25);
+            color: #c8a84b;
+        }
+
+        .uni-body {
+            padding: 1.25rem 1.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .uni-faculty {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .uni-faculty-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            margin-bottom: 0.45rem;
+        }
+
+        .uni-faculty-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .uni-specialty {
+            flex: 2;
+            min-width: 260px;
+        }
+
+        .uni-spec-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            margin-bottom: 0.45rem;
+        }
+
+        .uni-spec-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #e8a020, #f0c040, #c8802a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .uni-fin-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+        }
+
+        .uni-fin-tag {
+            padding: 0.18rem 0.5rem;
+            background: rgba(180, 140, 0, 0.1);
+            border: 1px solid rgba(200, 160, 0, 0.2);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: #c8a84b;
+        }
+
+        .uni-relevance {
+            flex: 2;
+            min-width: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .uni-rel-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            margin-bottom: 0.05rem;
+        }
+
+        .uni-rel-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.45rem;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .uni-rel-item::before {
+            content: '✦';
+            color: #c8a84b;
+            font-size: 0.55rem;
+            margin-top: 0.3rem;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 600px) {
+            .uni-banner-top {
+                flex-direction: column;
+            }
+
+            .uni-crest {
+                border-right: none;
+                border-bottom: 1px solid rgba(139, 0, 0, 0.15);
+                padding: 1.25rem;
+            }
+
+            .uni-body {
+                gap: 1rem;
+            }
+        }
+
+        .proj-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 1.1rem;
+        }
+
+        .proj-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.4rem;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s, background 0.25s;
+            backdrop-filter: blur(8px);
+        }
+
+        .proj-card:hover {
+            border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.18);
+        }
+
+        .proj-card.dashed {
+            border-style: dashed;
+            opacity: 0.65;
+        }
+
+        .proj-card.dashed:hover {
+            opacity: 1;
+        }
+
+        .proj-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .proj-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.97rem;
+        }
+
+        .proj-stars {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+
+        .proj-desc {
+            font-size: 0.81rem;
+            color: var(--muted);
+            flex: 1;
+        }
+
+        .proj-foot {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .proj-lang {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.77rem;
+            color: var(--muted);
+        }
+
+        .lang-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .proj-arrow {
+            margin-left: auto;
+            font-size: 0.78rem;
+            color: var(--primary);
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.8rem;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Slide Navigation Dots ── */
+        .slide-nav {
+            position: fixed;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .slide-nav a {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .slide-nav a:hover {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+
+        .slide-nav a.active {
+            background: var(--primary);
+            box-shadow: 0 0 12px var(--primary-glow);
+            transform: scale(1.3);
+        }
+
+        .slide-arrows {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001;
+            pointer-events: none;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 0.5rem;
+        }
+
+        .slide-arrows button {
+            pointer-events: auto;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: rgba(10, 10, 18, 0.8);
+            backdrop-filter: blur(12px);
+            color: var(--muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transition: all 0.25s;
+        }
+
+        .slide-arrows button:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.15);
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+
+        .fade-up.in {
+            opacity: 1;
+            transform: none;
+        }
+
+        .fade-up:nth-child(2) {
+            transition-delay: 0.08s;
+        }
+
+        .fade-up:nth-child(3) {
+            transition-delay: 0.15s;
+        }
+
+        .fade-up:nth-child(4) {
+            transition-delay: 0.22s;
+        }
+
+        .fade-up:nth-child(5) {
+            transition-delay: 0.29s;
+        }
+
+        .fade-up:nth-child(6) {
+            transition-delay: 0.36s;
+        }
+
+        .fade-up:nth-child(7) {
+            transition-delay: 0.43s;
+        }
+
+        .fade-up:nth-child(8) {
+            transition-delay: 0.5s;
+        }
+
+        .l-en, .l-ru {
+            display: contents;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.35);
+            border-radius: 3px;
+        }
+
+        @media (max-width: 760px) {
+            nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links a {
+                padding: 0.35rem 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .slide {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .slide-inner {
+                padding: 0 1rem;
+            }
+
+            .hero-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-card {
+                display: none;
+            }
+
+            .hero-name {
+                letter-spacing: -1px;
+            }
+
+            .timeline {
+                padding-left: 1.35rem;
+            }
+
+            .tl-dot {
+                left: -1.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links a[href="#skills"],
+            .nav-links a[href="#education"] {
+                display: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .slide-nav, .slide-arrows {
+                display: none;
+            }
+        }
+    </style>
+    <script src="./config.js"></script>
+</head>
+<body>
+
+<div class="bg-canvas"></div>
+<div class="bg-grid"></div>
+<div id="scroll-bar"></div>
+
+<!-- Slide arrows (keyboard hint) -->
+<div class="slide-arrows" aria-hidden="true">
+    <button type="button" id="slide-prev" title="Previous slide">‹</button>
+    <button type="button" id="slide-next" title="Next slide">›</button>
+</div>
+
+<!-- Slide nav dots -->
+<nav class="slide-nav" aria-label="Slide navigation">
+    <a href="#hero" aria-label="Resume"></a>
+    <a href="#skills" aria-label="Skills"></a>
+    <a href="#experience" aria-label="Experience"></a>
+    <a href="#education" aria-label="Education"></a>
+    <a href="#projects" aria-label="Projects"></a>
+</nav>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav id="main-nav" class="scrolled">
+    <a class="nav-logo" href="#hero">AB</a>
+    <div class="nav-links">
+        <a href="#hero">
+            <span class="l-en">Resume</span><span class="l-ru" style="display:none">Резюме</span>
+        </a>
+        <a href="#skills">
+            <span class="l-en">Skills</span><span class="l-ru" style="display:none">Навыки</span>
+        </a>
+        <a href="#experience">
+            <span class="l-en">Experience</span><span class="l-ru" style="display:none">Опыт</span>
+        </a>
+        <a href="#education">
+            <span class="l-en">Education</span><span class="l-ru" style="display:none">Образование</span>
+        </a>
+        <a href="#projects">
+            <span class="l-en">Projects</span><span class="l-ru" style="display:none">Проекты</span>
+        </a>
+    </div>
+    <div class="nav-right">
+        <div class="lang-switch">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="ru">RU</button>
+        </div>
+    </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section id="hero" class="slide wide">
+    <div class="hero-inner">
+
+        <div>
+            <div class="hero-eyebrow" id="otw-badge" style="display:none">
+                <span class="otw-badge">
+                    <span class="otw-dot"></span>
+                    <span class="l-en">Open to work</span><span class="l-ru" style="display:none">Открыт к предложениям</span>
+                </span>
+            </div>
+            <div class="hero-name-row">
+                <h1 class="hero-name">
+                    Artur<br><span class="grad">Baltaev</span>
+                </h1>
+                <a class="hero-handle" href="https://t.me/bagart" target="_blank" rel="noopener">
+                    @BAGArt
+                </a>
+            </div>
+
+            <p class="hero-title">
+                <strong>
+                    <span class="l-en">Architect Web Developer · Senior Full-Stack Engineer</span>
+                    <span class="l-ru" style="display:none">Веб-архитектор · Старший Full-Stack инженер</span>
+                </strong><br>
+                <span class="l-en">SRE · DBA · High-Traffic · Big-Data</span>
+                <span class="l-ru" style="display:none">SRE · DBA · HighLoad · BigData</span>
+            </p>
+
+            <div class="hero-tags">
+                <span class="htag">#PHP</span>
+                <span class="htag">#JavaScript</span>
+                <span class="htag">#HighLoad</span>
+                <span class="htag">#SRE</span>
+                <span class="htag">#Laravel</span>
+                <span class="htag">#Symfony</span>
+                <span class="htag">#PgSQL</span>
+                <span class="htag">#BigQuery</span>
+                <span class="htag">#Spanner</span>
+                <span class="htag">#ElasticSearch</span>
+                <span class="htag">#k8s</span>
+                <span class="htag">#SQS</span>
+                <span class="htag">#Kafka</span>
+                <span class="htag">#AI-integration</span>
+                <span class="htag">#MCP</span>
+                <span class="htag">#RAD</span>
+                <span class="htag">#MVP</span>
+                <span class="htag">#Fintech</span>
+                <span class="htag">#Medtech</span>
+            </div>
+
+            <div class="hero-nomad">
+                <span class="nomad-item"><span class="nomad-ico">🌍</span><span
+                        class="l-en">Progressive <em>AI·ML</em> service</span><span class="l-ru"
+                                                                                                   style="display:none">Прогрессивный <em>AI·ML</em> сервис</span></span>
+                <span class="nomad-sep">|</span>
+                <span class="nomad-item"><span class="nomad-ico">🔒</span><span class="l-en">Tech Audit</span><span
+                        class="l-ru" style="display:none">Тех Аудит</span></span>
+                <span class="nomad-sep">|</span>
+                <span class="nomad-item"><span class="nomad-ico">💬</span><span
+                        class="l-en">Proactive Management</span><span class="l-ru" style="display:none">Проактивный Менеджмент</span></span>
+                <span class="nomad-sep">|</span>
+                <span class="nomad-item"><span class="nomad-ico">🚀</span><span class="l-en">Startups</span><span
+                        class="l-ru" style="display:none">Cтартапинг</span></span>
+            </div>
+
+            <div class="hero-ctas">
+                <a class="btn btn-primary" href="https://github.com/bagart" target="_blank" rel="noopener">
+                    ⌥ GitHub
+                </a>
+                <a class="btn btn-ghost" href="./Architect Web Developer, Remote_ Artur Baltaev (shrt).pdf" download>
+                    ↓ <span class="l-en">Download CV</span><span class="l-ru" style="display:none">Скачать резюме</span>
+                </a>
+                <a class="btn btn-ghost" href="mailto:Baltaev.Artur@gmail.com">
+                    ✉ Email
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-card">
+            <div class="hero-photo-wrap">
+                <img id="hero-photo-img" alt="Artur Baltaev" class="hero-photo"/>
+            </div>
+            <div class="c-item">
+                <span class="c-icon">🌐</span> Digital Nomad
+            </div>
+            <a class="c-item" href="mailto:Baltaev.Artur@gmail.com">
+                <span class="c-icon">✉</span> Baltaev.Artur@gmail.com
+            </a>
+            <a class="c-item" href="https://github.com/bagart" target="_blank" rel="noopener">
+                <span class="c-icon">⌥</span> github.com/bagart
+            </a>
+            <a class="c-item" href="https://t.me/BAGArt" target="_blank" rel="noopener">
+                <svg class="c-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M21.8 2.2a1.2 1.2 0 0 0-1.3-.3L2.3 9.1c-.9.3-.9 1.1-.1 1.4l4.6 1.4 1.8 5.6c.2.6.9.8 1.4.4l2.6-2.1 4.7 3.5c.7.5 1.6.1 1.8-.7l3.1-15.1c.1-.6-.1-1.1-.4-1.3zm-9.9 10.1-1 3.8-1.3-4.2 8.7-6.1-6.4 6.5z"/>
+                </svg>
+                @BAGArt
+            </a>
+            <div class="hero-stat">
+                <div class="stat-num" id="exp-years"></div>
+                <div class="stat-lbl">
+                    <span class="l-en">years of experience</span>
+                    <span class="l-ru" style="display:none">лет опыта</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ═══════════ SKILLS ═══════════ -->
+<section id="skills" class="slide">
+    <div class="sec-label">// expertise</div>
+    <h2 class="sec-title">
+    <span class="accent">
+      <span class="l-en">Skills</span><span class="l-ru" style="display:none">Навыки</span>
+    </span>
+        <span class="l-en"> &amp; Stack</span><span class="l-ru" style="display:none"> и стек</span>
+    </h2>
+    <div class="sec-divider"></div>
+
+    <div class="skills-grid">
+        <div class="sk-card fade-up in">
+            <div class="sk-head">
+                <span class="l-en">Languages</span><span class="l-ru" style="display:none">Языки</span>
+            </div>
+            <div class="sk-tags">
+                <span class="sk-tag">PHP 3→8.5</span>
+                <span class="sk-tag">JavaScript</span>
+                <span class="sk-tag">TypeScript</span>
+                <span class="sk-tag">SQL / PL/PgSQL</span>
+                <span class="sk-tag">Perl</span>
+            </div>
+        </div>
+        <div class="sk-card fade-up in">
+            <div class="sk-head">
+                <span class="l-en">Databases</span><span class="l-ru" style="display:none">Базы данных</span>
+            </div>
+            <div class="sk-tags">
+                <span class="sk-tag">PostgreSQL</span>
+                <span class="sk-tag">MySQL</span>
+                <span class="sk-tag">BigQuery</span>
+                <span class="sk-tag">Spanner</span>
+                <span class="sk-tag">ClickHouse</span>
+                <span class="sk-tag">ElasticSearch</span>
+                <span class="sk-tag">Sphinx</span>
+                <span class="sk-tag">Redis</span>
+                <span class="sk-tag">NoSQL</span>
+            </div>
+        </div>
+        <div class="sk-card fade-up in">
+            <div class="sk-head">
+                <span class="l-en">Backend</span><span class="l-ru" style="display:none">Backend</span>
+            </div>
+            <div class="sk-tags">
+                <span class="sk-tag">Laravel / Lumen</span>
+                <span class="sk-tag">Symfony</span>
+                <span class="sk-tag">Node.js</span>
+                <span class="sk-tag">Yii</span>
+                <span class="sk-tag">MediaWiki</span>
+                <span class="sk-tag">onPHP</span>
+            </div>
+        </div>
+        <div class="sk-card fade-up in">
+            <div class="sk-head">Frontend</div>
+            <div class="sk-tags">
+                <span class="sk-tag">React.js</span>
+                <span class="sk-tag">Vue.js</span>
+                <span class="sk-tag">async SPA</span>
+                <span class="sk-tag">PWA</span>
+                <span class="sk-tag">Socket.io</span>
+                <span class="sk-tag">OpenAPI</span>
+            </div>
+        </div>
+        <div class="sk-card fade-up in">
+            <div class="sk-head">
+                <span class="l-en">Cloud &amp; DevOps</span><span class="l-ru"
+                                                                  style="display:none">Облако и DevOps</span>
+            </div>
+            <div class="sk-tags">
+                <span class="sk-tag">Docker</span>
+                <span class="sk-tag">Kubernetes</span>
+                <span class="sk-tag">GCloud</span>
+                <span class="sk-tag">AWS</span>
+                <span class="sk-tag">Azure</span>
+                <span class="sk-tag">CI/CD</span>
+                <span class="sk-tag">Linux</span>
+                <span class="sk-tag">PubSub</span>
+                <span class="sk-tag">Kafka / RabbitMQ</span>
+            </div>
+        </div>
+        <div class="sk-card fade-up in">
+            <div class="sk-head">
+                <span class="l-en">Architecture</span><span class="l-ru" style="display:none">Архитектура</span>
+            </div>
+            <div class="sk-tags">
+                <span class="sk-tag">MSA / SOA</span>
+                <span class="sk-tag">SOLID</span>
+                <span class="sk-tag">GRASP</span>
+                <span class="sk-tag">DDD</span>
+                <span class="sk-tag">CQRS+ES</span>
+                <span class="sk-tag">REST</span>
+                <span class="sk-tag">gRPC</span>
+                <span class="sk-tag">Swagger</span>
+            </div>
+        </div>
+        <div class="sk-card fade-up in">
+            <div class="sk-head">
+                <span class="l-en">API &amp; Integrations</span><span class="l-ru"
+                                                                      style="display:none">API и интеграции</span>
+            </div>
+            <div class="sk-tags">
+                <span class="sk-tag">Stripe / PayPal</span>
+                <span class="sk-tag">Paddle</span>
+                <span class="sk-tag">oAuth / Auth0</span>
+                <span class="sk-tag">Google CSE</span>
+                <span class="sk-tag">SOAP</span>
+                <span class="sk-tag">RTB</span>
+                <span class="sk-tag">Maps API</span>
+                <span class="sk-tag">Firebase</span>
+            </div>
+        </div>
+        <div class="sk-card fade-up in">
+            <div class="sk-head">
+                <span class="l-en">Testing &amp; SRE</span><span class="l-ru"
+                                                                 style="display:none">Тестирование и SRE</span>
+            </div>
+            <div class="sk-tags">
+                <span class="sk-tag">PHPUnit</span>
+                <span class="sk-tag">Codeception</span>
+                <span class="sk-tag">Unit</span>
+                <span class="sk-tag">Functional</span>
+                <span class="sk-tag">Stress</span>
+                <span class="sk-tag">Profiling</span>
+                <span class="sk-tag">Security Audit</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ EXPERIENCE ═══════════ -->
+<section id="experience" class="slide" style="padding-bottom: 5rem;">
+    <div class="sec-label">// career</div>
+    <h2 class="sec-title">
+    <span class="accent">
+      <span class="l-en">Work</span><span class="l-ru" style="display:none">Опыт</span>
+    </span>
+        <span class="l-en"> Experience</span><span class="l-ru" style="display:none"> работы</span>
+    </h2>
+    <div class="sec-divider"></div>
+
+    <div class="timeline">
+
+        <!-- JOB 1 -->
+        <div class="tl-item fade-up in">
+            <div class="tl-dot"></div>
+            <div class="exp-card clickable" onclick="toggleExp(this)">
+                <div class="exp-head">
+                    <div>
+                        <div class="exp-co">
+                            <span class="l-en">Big Medical CRM, US (NDA)</span>
+                            <span class="l-ru" style="display:none">Крупная медицинская CRM, США (NDA)</span>
+                        </div>
+                        <div class="exp-role">
+                            <span class="l-en">Senior Backend Developer · HIPAA Certified</span>
+                            <span class="l-ru" style="display:none">Старший бэкенд-разработчик · HIPAA сертификат</span>
+                        </div>
+                    </div>
+                    <div class="exp-meta">
+                        <div class="exp-period">Mar 2022 — Nov 2025</div>
+                        <span class="exp-chevron">▼</span>
+                    </div>
+                </div>
+                <div class="exp-stack">
+                    <span class="st-tag">PHP 8.4</span><span class="st-tag">Laravel</span>
+                    <span class="st-tag">BigQuery</span><span class="st-tag">Spanner</span>
+                    <span class="st-tag">Kubernetes</span><span class="st-tag">MSA</span>
+                    <span class="st-tag">PubSub</span><span class="st-tag">Swagger</span>
+                </div>
+                <div class="exp-body">
+                    <div class="exp-body-inner">
+                        <ul class="l-en">
+                            <li>Full architecture &amp; development of a Facet Search Engine for medical data</li>
+                            <li>BigData complex SQL in BigQuery — typical query 30–200 KB, deep chain rules</li>
+                            <li>Post-processing 1 billion+ raw lines: aggregate, normalize, serve via API</li>
+                            <li>Migration from GCloud BigQuery + external ML to distributed GCloud Spanner</li>
+                            <li>Cloud IAM permission layers to data columns</li>
+                            <li>Thousands of SQL rules (medicine taxonomy) processed via queues</li>
+                        </ul>
+                        <ul class="l-ru" style="display:none">
+                            <li>Полная архитектура и разработка системы фасетного поиска медицинских данных</li>
+                            <li>BigData со сложными SQL в BigQuery — типичный запрос 30–200 КБ, глубокие цепочки</li>
+                            <li>Постобработка 1 млрд+ строк результатов: агрегация, нормализация, API</li>
+                            <li>Миграция с GCloud BigQuery + ML на распределённый GCloud Spanner</li>
+                            <li>Облачные IAM слои разрешений к данным по столбцам</li>
+                            <li>Тысячи SQL-правил (медицинская таксономия) обрабатываются через очереди</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOB 2 -->
+        <div class="tl-item fade-up in">
+            <div class="tl-dot"></div>
+            <div class="exp-card clickable" onclick="toggleExp(this)">
+                <div class="exp-head">
+                    <div>
+                        <div class="exp-co">
+                            <span class="l-en">Booking B2B Platform, International</span>
+                            <span class="l-ru" style="display:none">B2B Booking платформа, Международный стартап</span>
+                        </div>
+                        <div class="exp-role">
+                            <span class="l-en">Team Lead · Senior Backend Developer</span>
+                            <span class="l-ru" style="display:none">Team Lead · Старший бэкенд-разработчик</span>
+                        </div>
+                    </div>
+                    <div class="exp-meta">
+                        <div class="exp-period">Aug 2020 — Mar 2022</div>
+                        <span class="exp-chevron">▼</span>
+                    </div>
+                </div>
+                <div class="exp-stack">
+                    <span class="st-tag">PHP 8</span><span class="st-tag">Laravel</span>
+                    <span class="st-tag">PostgreSQL</span><span class="st-tag">Full MSA</span>
+                    <span class="st-tag">Kubernetes</span><span class="st-tag">Auth0</span>
+                    <span class="st-tag">Paddle</span><span class="st-tag">Sanctum</span>
+                </div>
+                <div class="exp-body">
+                    <div class="exp-body-inner">
+                        <ul class="l-en">
+                            <li>Solo backend development from scratch to MVP (from markups and discussions only)</li>
+                            <li>Full Microservice Architecture with separated DB and API logic</li>
+                            <li>REST API for SPA with Postman documentation and API tests</li>
+                            <li>MSA-transactions and aggregation across services</li>
+                            <li>Auth0, Paddle, Sanctum integrations; GitLab CI/CD pipeline</li>
+                        </ul>
+                        <ul class="l-ru" style="display:none">
+                            <li>Единоличная разработка бэкенда с нуля до MVP (только по макетам и обсуждениям)</li>
+                            <li>Полная микросервисная архитектура с раздельными БД и API-слоями</li>
+                            <li>REST API для SPA с документацией Postman и API-тестами</li>
+                            <li>MSA-транзакции и агрегация между сервисами</li>
+                            <li>Интеграции Auth0, Paddle, Sanctum; GitLab CI/CD пайплайн</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOB 3 -->
+        <div class="tl-item fade-up in">
+            <div class="tl-dot"></div>
+            <div class="exp-card clickable" onclick="toggleExp(this)">
+                <div class="exp-head">
+                    <div>
+                        <div class="exp-co">
+                            <span class="l-en">World TOP-5 Global Site (NDA), US — via speedandfunction</span>
+                            <span class="l-ru"
+                                  style="display:none">Мировой ТОП-5 сайт (NDA), США — speedandfunction</span>
+                        </div>
+                        <div class="exp-role">
+                            <span class="l-en">Senior Backend Developer · Core Re-engineering</span>
+                            <span class="l-ru"
+                                  style="display:none">Старший бэкенд-разработчик · Реинжиниринг ядра</span>
+                        </div>
+                    </div>
+                    <div class="exp-meta">
+                        <div class="exp-period">Dec 2019 — Jul 2020</div>
+                        <span class="exp-chevron">▼</span>
+                    </div>
+                </div>
+                <div class="exp-stack">
+                    <span class="st-tag">PHP 7.2</span><span class="st-tag">Universal SQL</span>
+                    <span class="st-tag">PHPUnit</span><span class="st-tag">Docker</span>
+                    <span class="st-tag">Gerrit</span><span class="st-tag">Phabricator</span>
+                </div>
+                <div class="exp-body">
+                    <div class="exp-body-inner">
+                        <ul class="l-en">
+                            <li>Deep core decoupling and re-engineering (GRASP, SOLID)</li>
+                            <li>Refactored: Actions, Typed Content, Pages, Language, Searcher, API, Emailer</li>
+                            <li>Added new SQL DB support for self-hosted extensions</li>
+                            <li>Code review, PHPUnit coverage, all commits with public review</li>
+                            <li>Open Source deprecation processes and documentation</li>
+                        </ul>
+                        <ul class="l-ru" style="display:none">
+                            <li>Глубокое разделение и реинжиниринг ядра (GRASP, SOLID)</li>
+                            <li>Рефакторинг: Actions, Typed Content, Pages, Language, Searcher, API, Emailer</li>
+                            <li>Добавление новой SQL БД для self-hosted расширений</li>
+                            <li>Code review, PHPUnit покрытие, все коммиты с публичным ревью</li>
+                            <li>Документирование устаревших Open Source процессов</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOB 4 -->
+        <div class="tl-item fade-up in">
+            <div class="tl-dot"></div>
+            <div class="exp-card clickable" onclick="toggleExp(this)">
+                <div class="exp-head">
+                    <div>
+                        <div class="exp-co">Manychat.com, USA</div>
+                        <div class="exp-role">
+                            <span class="l-en">Senior Backend Developer · Visual Bot Builder, Facebook Messenger</span>
+                            <span class="l-ru" style="display:none">Старший бэкенд-разработчик · Конструктор ботов Facebook Messenger</span>
+                        </div>
+                    </div>
+                    <div class="exp-meta">
+                        <div class="exp-period">Feb – Jul 2019</div>
+                        <span class="exp-chevron">▼</span>
+                    </div>
+                </div>
+                <div class="exp-stack">
+                    <span class="st-tag">PHP</span><span class="st-tag">Yii</span>
+                    <span class="st-tag">Codeception</span><span class="st-tag">SQL</span>
+                    <span class="st-tag">OpenAPI</span><span class="st-tag">React</span>
+                </div>
+                <div class="exp-body">
+                    <div class="exp-body-inner">
+                        <ul class="l-en">
+                            <li>Re-engineering core backend: message processor and queue from Facebook etc.</li>
+                            <li>High-throughput message handling for bot interaction flows</li>
+                        </ul>
+                        <ul class="l-ru" style="display:none">
+                            <li>Реинжиниринг ядра: обработчик сообщений и очереди из Facebook и других источников</li>
+                            <li>Высокопроизводительная обработка сообщений для потоков взаимодействия ботов</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOB 5 -->
+        <div class="tl-item fade-up in">
+            <div class="tl-dot"></div>
+            <div class="exp-card clickable" onclick="toggleExp(this)">
+                <div class="exp-head">
+                    <div>
+                        <div class="exp-co">
+                            <span class="l-en">Gruzer — Logistics Auction &amp; Taxi (B2B/B2C)</span>
+                            <span class="l-ru"
+                                  style="display:none">Gruzer — Логистический аукцион и такси (B2B/B2C)</span>
+                        </div>
+                        <div class="exp-role">
+                            <span class="l-en">Senior Architect · Team Lead</span>
+                            <span class="l-ru" style="display:none">Старший архитектор · Team Lead</span>
+                        </div>
+                    </div>
+                    <div class="exp-meta">
+                        <div class="exp-period">Dec 2017 — Dec 2018</div>
+                        <span class="exp-chevron">▼</span>
+                    </div>
+                </div>
+                <div class="exp-stack">
+                    <span class="st-tag">Laravel</span><span class="st-tag">Node.js</span>
+                    <span class="st-tag">PostgreSQL</span><span class="st-tag">Socket.io</span>
+                    <span class="st-tag">Kubernetes</span><span class="st-tag">Redis</span>
+                    <span class="st-tag">Firebase</span><span class="st-tag">Swagger</span>
+                </div>
+                <div class="exp-body">
+                    <div class="exp-body-inner">
+                        <ul class="l-en">
+                            <li>Full SOA/Microservice Architecture with async service-bus (queued)</li>
+                            <li>Real-time SPA with WebSocket live-updates and push notifications</li>
+                            <li>Auction module: bookkeeping, bidding, group messaging</li>
+                            <li>Billing: checkout, payment processing, balance, B2B/B2C, multicurrency</li>
+                            <li>Maps: Yandex, Google, OpenStreetMap integration</li>
+                            <li>Single mobile &amp; SPA API with Swagger documentation</li>
+                        </ul>
+                        <ul class="l-ru" style="display:none">
+                            <li>Полная SOA/микросервисная архитектура с асинхронной шиной (очередью)</li>
+                            <li>Real-time SPA с WebSocket, живые обновления и push-уведомления</li>
+                            <li>Модуль аукциона: учёт, торги, групповые сообщения</li>
+                            <li>Биллинг: checkout, обработка оплат, баланс, B2B/B2C, мультивалютность</li>
+                            <li>Карты: Яндекс, Google, OpenStreetMap</li>
+                            <li>Единый API для мобильных и SPA с документацией Swagger</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOB 6 -->
+        <div class="tl-item fade-up in">
+            <div class="tl-dot"></div>
+            <div class="exp-card clickable" onclick="toggleExp(this)">
+                <div class="exp-head">
+                    <div>
+                        <div class="exp-co">
+                            <span class="l-en">Bionika — Medical Data Service</span>
+                            <span class="l-ru" style="display:none">Bionika — Медицинский сервис данных</span>
+                        </div>
+                        <div class="exp-role">
+                            <span class="l-en">Senior Fullstack Developer · Solo Architect + DevOps</span>
+                            <span class="l-ru" style="display:none">Старший fullstack-разработчик · Единоличный архитектор + DevOps</span>
+                        </div>
+                    </div>
+                    <div class="exp-meta">
+                        <div class="exp-period">Jun 2016 — Apr 2017</div>
+                        <span class="exp-chevron">▼</span>
+                    </div>
+                </div>
+                <div class="exp-stack">
+                    <span class="st-tag">Laravel 5</span><span class="st-tag">Vue.js</span>
+                    <span class="st-tag">PHP 7</span><span class="st-tag">PostgreSQL</span>
+                    <span class="st-tag">ElasticSearch</span><span class="st-tag">Redis</span><span class="st-tag">Docker</span>
+                </div>
+                <div class="exp-body">
+                    <div class="exp-body-inner">
+                        <ul class="l-en">
+                            <li>Solo: Frontend, Backend, DBA and DevOps — project from start to finish</li>
+                            <li>Intelligent facet search engine with ElasticSearch as primary store</li>
+                            <li>Data sync with public procurement APIs (zakupki.gov.ru)</li>
+                        </ul>
+                        <ul class="l-ru" style="display:none">
+                            <li>Единоличная полная разработка: Frontend, Backend, DBA и DevOps</li>
+                            <li>Умный фасетный поиск на ElasticSearch как основном хранилище</li>
+                            <li>Синхронизация с API госзакупок (zakupki.gov.ru)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOB 7 -->
+        <div class="tl-item fade-up in">
+            <div class="tl-dot"></div>
+            <div class="exp-card clickable" onclick="toggleExp(this)">
+                <div class="exp-head">
+                    <div>
+                        <div class="exp-co">
+                            <span class="l-en">Taxi-Angel.ru — International Taxi Service</span>
+                            <span class="l-ru" style="display:none">Taxi-Angel.ru — Международный сервис такси</span>
+                        </div>
+                        <div class="exp-role">
+                            <span class="l-en">Senior Fullstack Developer</span>
+                            <span class="l-ru" style="display:none">Старший fullstack-разработчик</span>
+                        </div>
+                    </div>
+                    <div class="exp-meta">
+                        <div class="exp-period">Oct 2015 — Mar 2016</div>
+                        <span class="exp-chevron">▼</span>
+                    </div>
+                </div>
+                <div class="exp-stack">
+                    <span class="st-tag">PHP 5.6</span><span class="st-tag">Laravel</span>
+                    <span class="st-tag">PostgreSQL</span><span class="st-tag">PL/pgSQL</span>
+                    <span class="st-tag">Highcharts</span><span class="st-tag">AdminLTE</span>
+                </div>
+                <div class="exp-body">
+                    <div class="exp-body-inner">
+                        <ul class="l-en">
+                            <li>Mobile API from scratch for working production project</li>
+                            <li>Admin panel with call and order statistics (Highcharts)</li>
+                            <li>DB optimization, support and bug fixing</li>
+                        </ul>
+                        <ul class="l-ru" style="display:none">
+                            <li>Мобильное API с нуля для продакшн-проекта</li>
+                            <li>Панель администратора со статистикой звонков и заказов (Highcharts)</li>
+                            <li>Оптимизация БД, поддержка и исправление ошибок</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOB 8 -->
+        <div class="tl-item fade-up in">
+            <div class="tl-dot"></div>
+            <div class="exp-card clickable" onclick="toggleExp(this)">
+                <div class="exp-head">
+                    <div>
+                        <div class="exp-co">
+                            <span class="l-en">IMHOnet.ru — HighLoad Recommendation Service</span>
+                            <span class="l-ru"
+                                  style="display:none">IMHOnet.ru — Высоконагруженный сервис рекомендаций</span>
+                        </div>
+                        <div class="exp-role">
+                            <span class="l-en">Senior Backend Developer</span>
+                            <span class="l-ru" style="display:none">Старший бэкенд-разработчик</span>
+                        </div>
+                    </div>
+                    <div class="exp-meta">
+                        <div class="exp-period">Oct 2014 — Oct 2015</div>
+                        <span class="exp-chevron">▼</span>
+                    </div>
+                </div>
+                <div class="exp-stack">
+                    <span class="st-tag">PHP</span><span class="st-tag">MySQL</span>
+                    <span class="st-tag">Sphinx</span><span class="st-tag">ElasticSearch</span>
+                    <span class="st-tag">RTB</span><span class="st-tag">MQ</span>
+                </div>
+                <div class="exp-body">
+                    <div class="exp-body-inner">
+                        <ul class="l-en">
+                            <li>HighLoad optimization for high-traffic platform</li>
+                            <li>RTB data sync — recommendation engine for anonymous / new users</li>
+                            <li>New import data models from external content providers</li>
+                            <li>Mailing API integrations: Mandrill, ExpertSender</li>
+                        </ul>
+                        <ul class="l-ru" style="display:none">
+                            <li>Оптимизация для высоких нагрузок</li>
+                            <li>RTB синхронизация — движок рекомендаций для анонимных пользователей</li>
+                            <li>Новые модели импорта данных от внешних контент-провайдеров</li>
+                            <li>Интеграция API рассылок: Mandrill, ExpertSender</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOB 9 -->
+        <div class="tl-item fade-up in">
+            <div class="tl-dot"></div>
+            <div class="exp-card clickable" onclick="toggleExp(this)">
+                <div class="exp-head">
+                    <div>
+                        <div class="exp-co">
+                            <span class="l-en">Rabota.ru (RDW-media) — Recruiting Portal, Local TOP-3</span>
+                            <span class="l-ru" style="display:none">Rabota.ru (RDW-media) — Рекрутинговый портал, местный ТОП-3</span>
+                        </div>
+                        <div class="exp-role">
+                            <span class="l-en">Web Developer · HighLoad &amp; Optimization</span>
+                            <span class="l-ru"
+                                  style="display:none">Веб-разработчик · Высокие нагрузки и оптимизация</span>
+                        </div>
+                    </div>
+                    <div class="exp-meta">
+                        <div class="exp-period">Nov 2010 — Aug 2012</div>
+                        <span class="exp-chevron">▼</span>
+                    </div>
+                </div>
+                <div class="exp-stack">
+                    <span class="st-tag">PHP 5</span><span class="st-tag">onPHP</span>
+                    <span class="st-tag">PostgreSQL</span><span class="st-tag">PL/PgSQL</span>
+                    <span class="st-tag">Sphinx</span><span class="st-tag">jQuery</span>
+                </div>
+                <div class="exp-body">
+                    <div class="exp-body-inner">
+                        <ul class="l-en">
+                            <li>HighLoad optimization: horizontal scaling, DB optimization, caching</li>
+                            <li>Payment API integration (Robokassa), billing sync</li>
+                            <li>Statistics aggregation: salaries by tags, payment analytics</li>
+                        </ul>
+                        <ul class="l-ru" style="display:none">
+                            <li>Оптимизация высоких нагрузок: горизонтальное масштабирование, кэшировавание</li>
+                            <li>Интеграция платёжного API (Robokassa), синхронизация с биллингом</li>
+                            <li>Агрегация статистики: зарплаты по тегам, платёжная аналитика</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OTHER -->
+        <div class="tl-item fade-up in">
+            <div class="tl-dot dim"></div>
+            <div class="exp-card">
+                <div class="exp-head">
+                    <div>
+                        <div class="exp-co" style="color: var(--muted);">
+                            <span class="l-en">+ Other projects: USA, UK, South Africa</span>
+                            <span class="l-ru" style="display:none">+ Другие проекты: США, Великобритания, ЮАР</span>
+                        </div>
+                        <div class="exp-role">PHP (Laravel, Symfony) · FullStack (Vue.js, React.js)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /timeline -->
+</section>
+
+<!-- ═══════════ EDUCATION ═══════════ -->
+<section id="education" class="slide">
+    <div class="sec-label">// background</div>
+    <h2 class="sec-title">
+    <span class="accent">
+      <span class="l-en">Education</span><span class="l-ru" style="display:none">Образование</span>
+    </span>
+        <span class="l-en"> &amp; About</span><span class="l-ru" style="display:none"> и о себе</span>
+    </h2>
+    <div class="sec-divider"></div>
+
+    <div class="edu-grid">
+
+        <!-- UNIVERSITY BANNER -->
+        <div class="uni-banner fade-up in">
+            <div class="uni-banner-top">
+
+                <!-- University Crest -->
+                <div class="uni-crest">
+                    <div class="uni-crest-circle">
+                        <img src="./chgu.png" alt="Chuvash State University crest" width="72" height="72"
+                             style="object-fit:contain;"/>
+                    </div>
+                </div>
+
+                <!-- Title block -->
+                <div class="uni-header">
+                    <div class="uni-name">
+                        <span class="l-en">Chuvash State University</span>
+                        <span class="l-ru" style="display:none">Чувашский государственный университет</span>
+                    </div>
+                    <div class="uni-name-sub">
+                        <span class="l-en">named after I.N. Ulyanov · Cheboksary, Russia</span>
+                        <span class="l-ru" style="display:none">им. И.Н. Ульянова · Чебоксары, Россия</span>
+                    </div>
+                    <div class="uni-degree-row">
+            <span class="uni-badge degree">
+              <span class="l-en">Bachelor's Degree</span>
+              <span class="l-ru" style="display:none">Степень бакалавра</span>
+            </span>
+                        <span class="uni-badge year">
+              <span class="l-en">Faculty of Economics</span>
+              <span class="l-ru" style="display:none">Экономический факультет</span>
+            </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="uni-body">
+
+                <div class="uni-specialty">
+                    <div class="uni-spec-label">
+                        <span class="l-en">Major / Specialization</span>
+                        <span class="l-ru" style="display:none">Специальность</span>
+                    </div>
+                    <div class="uni-spec-name">
+                        <span class="l-en">Banks &amp; Banking</span>
+                        <span class="l-ru" style="display:none">Банки и банковское дело</span>
+                    </div>
+                    <div class="uni-fin-tags">
+            <span class="uni-fin-tag">
+              <span class="l-en">Financial Systems</span><span class="l-ru"
+                                                               style="display:none">Финансовые системы</span>
+            </span>
+                        <span class="uni-fin-tag">
+              <span class="l-en">Banking Operations</span><span class="l-ru"
+                                                                style="display:none">Банковские операции</span>
+            </span>
+                        <span class="uni-fin-tag">
+              <span class="l-en">Risk Management</span><span class="l-ru" style="display:none">Управление рисками</span>
+            </span>
+                        <span class="uni-fin-tag">
+              <span class="l-en">Accounting</span><span class="l-ru" style="display:none">Бухгалтерский учёт</span>
+            </span>
+                        <span class="uni-fin-tag">
+              <span class="l-en">Macroeconomics</span><span class="l-ru" style="display:none">Макроэкономика</span>
+            </span>
+                    </div>
+                </div>
+
+                <div class="uni-relevance">
+                    <div class="uni-rel-label">
+                        <span class="l-en">Applied in engineering</span>
+                        <span class="l-ru" style="display:none">Применение в разработке</span>
+                    </div>
+                    <div class="uni-rel-item">
+                        <span class="l-en">Payment systems, billing, and multicurrency platforms (Stripe, PayPal, Paddle)</span>
+                        <span class="l-ru" style="display:none">Платёжные системы, биллинг и мультивалютные платформы (Stripe, PayPal, Paddle)</span>
+                    </div>
+                    <div class="uni-rel-item">
+                        <span class="l-en">Financial data pipelines: BigQuery, real-time aggregation, FinXLog</span>
+                        <span class="l-ru" style="display:none">Финансовые пайплайны данных: BigQuery, агрегация в реальном времени, FinXLog</span>
+                    </div>
+                    <div class="uni-rel-item">
+                        <span class="l-en">Domain fluency in fintech rules, transaction logic, and compliance</span>
+                        <span class="l-ru"
+                              style="display:none">Понимание правил финтеха, логики транзакций и compliance</span>
+                    </div>
+                </div>
+
+            </div>
+        </div><!-- /uni-banner -->
+
+        <div class="edu-card fade-up in">
+            <h3>
+                <span class="l-en">Human Languages</span>
+                <span class="l-ru" style="display:none">Языки общения</span>
+            </h3>
+            <p>
+                <span class="l-en">English — Advanced (full work)</span>
+                <span class="l-ru" style="display:none">Английский — продвинутый (полная работа)</span>
+            </p>
+            <p>
+                <span class="l-en">Russian — Fluent (native)</span>
+                <span class="l-ru" style="display:none">Русский — свободно (родной)</span>
+            </p>
+        </div>
+
+        <div class="edu-card fade-up in">
+            <h3>
+                <span class="l-en">Work Format</span>
+                <span class="l-ru" style="display:none">Формат работы</span>
+            </h3>
+            <p>
+                <span class="l-en">International remote contractor</span>
+                <span class="l-ru" style="display:none">Международный удалённый подрядчик</span>
+            </p>
+            <p>
+                <span class="l-en">Personal or B2B · Open to relocate</span>
+                <span class="l-ru" style="display:none">Физлицо или B2B · Открыт к релокации</span>
+            </p>
+        </div>
+
+        <div class="edu-card highlight fade-up in">
+            <h3 class="grad">HIPAA Certified</h3>
+            <p>
+                <span class="l-en">Certified for US medical data systems. Deep expertise in medtech rules, logic &amp; taxonomy.</span>
+                <span class="l-ru" style="display:none">Сертификат для работы с медицинскими данными США. Глубокая экспертиза в правилах medtech, логике и таксономии.</span>
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ PROJECTS ═══════════ -->
+<section id="projects" class="slide wide">
+    <div class="slide-inner">
+        <div class="sec-label">// open source</div>
+        <h2 class="sec-title">
+            <a href="https://github.com/bagart" target="_blank" rel="noopener" style="text-decoration:none;">
+                <span class="accent">GitHub</span>
+            </a>
+            <span class="l-en"> Projects</span><span class="l-ru" style="display:none"> Проекты</span>
+        </h2>
+        <div class="sec-divider"></div>
+
+        <div class="proj-grid">
+
+            <a class="proj-card fade-up in" href="https://github.com/bagart/laradock_env" target="_blank"
+               rel="noopener">
+                <div class="proj-top">
+                    <div class="proj-name">laradock_env</div>
+                    <div class="proj-stars">⭐ 28</div>
+                </div>
+                <div class="proj-desc">
+                    <span class="l-en">Laradock ENV — wrapper with command tools to build and manage multi-project Laradock Docker environments.</span>
+                    <span class="l-ru" style="display:none">Обёртка с инструментами для сборки и управления многопроектными Docker-средами Laradock.</span>
+                </div>
+                <div class="proj-foot">
+                    <div class="proj-lang">
+                        <div class="lang-dot" style="background:#89e051"></div>
+                        Shell
+                    </div>
+                    <div class="proj-arrow">View →</div>
+                </div>
+            </a>
+
+            <a class="proj-card fade-up in" href="https://github.com/bagart/laradock-multi" target="_blank"
+               rel="noopener">
+                <div class="proj-top">
+                    <div class="proj-name">laradock-multi</div>
+                    <div class="proj-stars">⭐ 25</div>
+                </div>
+                <div class="proj-desc">
+                    <span class="l-en">LaraDock for MSA dev environment — run multiple Laravel + Node.js apps together with Docker Compose.</span>
+                    <span class="l-ru" style="display:none">LaraDock для MSA среды разработки — запуск нескольких Laravel + Node.js приложений через Docker Compose.</span>
+                </div>
+                <div class="proj-foot">
+                    <div class="proj-lang">
+                        <div class="lang-dot" style="background:#89e051"></div>
+                        Shell
+                    </div>
+                    <div class="proj-arrow">View →</div>
+                </div>
+            </a>
+
+            <a class="proj-card fade-up in" href="https://github.com/bagart/FinXLog" target="_blank" rel="noopener">
+                <div class="proj-top">
+                    <div class="proj-name">FinXLog</div>
+                    <div class="proj-stars">⭐ 4</div>
+                </div>
+                <div class="proj-desc">
+                    <span class="l-en">Quotation exchange monitor — real-time financial data aggregation and logging platform.</span>
+                    <span class="l-ru" style="display:none">Монитор обмена котировками — агрегация и логирование финансовых данных в реальном времени.</span>
+                </div>
+                <div class="proj-foot">
+                    <div class="proj-lang">
+                        <div class="lang-dot" style="background:#4F5D95"></div>
+                        PHP
+                    </div>
+                    <div class="proj-arrow">View →</div>
+                </div>
+            </a>
+
+            <a class="proj-card fade-up in" href="https://github.com/bagart/elasticsearch-eloquent" target="_blank"
+               rel="noopener">
+                <div class="proj-top">
+                    <div class="proj-name">elasticsearch-eloquent</div>
+                    <div class="proj-stars">⭐ 1</div>
+                </div>
+                <div class="proj-desc">
+                    <span class="l-en">Use Elasticsearch with a familiar Eloquent ORM-style API — query builder and model mapping for Laravel.</span>
+                    <span class="l-ru" style="display:none">Elasticsearch с привычным Eloquent ORM API — query builder и маппинг моделей для Laravel.</span>
+                </div>
+                <div class="proj-foot">
+                    <div class="proj-lang">
+                        <div class="lang-dot" style="background:#4F5D95"></div>
+                        PHP
+                    </div>
+                    <div class="proj-arrow">View →</div>
+                </div>
+            </a>
+
+            <a class="proj-card fade-up in" href="https://github.com/bagart/SEOstats" target="_blank" rel="noopener">
+                <div class="proj-top">
+                    <div class="proj-name">SEOstats</div>
+                    <div class="proj-stars">⭐ 1</div>
+                </div>
+                <div class="proj-desc">
+                    <span class="l-en">Powerful open-source PHP library to pull SEO-relevant metrics (backlinks, ranks, traffic) from multiple providers.</span>
+                    <span class="l-ru" style="display:none">Мощная PHP библиотека для получения SEO-метрик (бэклинки, ранги, трафик) от множества провайдеров.</span>
+                </div>
+                <div class="proj-foot">
+                    <div class="proj-lang">
+                        <div class="lang-dot" style="background:#4F5D95"></div>
+                        PHP
+                    </div>
+                    <div class="proj-arrow">View →</div>
+                </div>
+            </a>
+
+            <a class="proj-card fade-up in" href="https://github.com/bagart/tests" target="_blank" rel="noopener">
+                <div class="proj-top">
+                    <div class="proj-name">tests</div>
+                    <div class="proj-stars">⭐ 1</div>
+                </div>
+                <div class="proj-desc">
+                    <span class="l-en">Algorithm implementations and data-structure solutions — practical coding exercises in PHP.</span>
+                    <span class="l-ru" style="display:none">Реализации алгоритмов и структуры данных — практические задачи на PHP.</span>
+                </div>
+                <div class="proj-foot">
+                    <div class="proj-lang">
+                        <div class="lang-dot" style="background:#4F5D95"></div>
+                        PHP
+                    </div>
+                    <div class="proj-arrow">View →</div>
+                </div>
+            </a>
+
+            <a class="proj-card fade-up in" href="https://github.com/bagart/third-party-cookies-demo" target="_blank"
+               rel="noopener">
+                <div class="proj-top">
+                    <div class="proj-name">third-party-cookies-demo</div>
+                </div>
+                <div class="proj-desc">
+                    <span class="l-en">Cross-domain iframe authentication sync — practical demo solving the third-party cookie problem.</span>
+                    <span class="l-ru" style="display:none">Синхронизация аутентификации через iframe — демо решения проблемы сторонних cookie между доменами.</span>
+                </div>
+                <div class="proj-foot">
+                    <div class="proj-lang">
+                        <div class="lang-dot" style="background:#4F5D95"></div>
+                        PHP
+                    </div>
+                    <div class="proj-arrow">View →</div>
+                </div>
+            </a>
+
+            <a class="proj-card dashed fade-up in" href="https://github.com/bagart" target="_blank" rel="noopener">
+                <div class="proj-top">
+                    <div class="proj-name">
+                        <span class="l-en">More on GitHub →</span>
+                        <span class="l-ru" style="display:none">Больше на GitHub →</span>
+                    </div>
+                </div>
+                <div class="proj-desc">
+                    <span class="l-en">27 public repositories: Docker tooling, PHP libraries, open-source forks, and experiments.</span>
+                    <span class="l-ru" style="display:none">27 публичных репозитория: Docker-инструменты, PHP библиотеки, open-source форки и эксперименты.</span>
+                </div>
+                <div class="proj-foot">
+                    <div class="proj-lang">github.com/bagart</div>
+                </div>
+            </a>
+
+        </div><!-- /proj-grid -->
+    </div><!-- /slide-inner -->
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+    <span class="l-en">Built by </span><span class="l-ru" style="display:none">Создано </span>
+    <a href="mailto:Baltaev.Artur@gmail.com">Artur Baltaev</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/bagart" target="_blank" rel="noopener">github.com/bagart</a>
+    &nbsp;·&nbsp;
+    <a href="https://t.me/BAGArt" target="_blank" rel="noopener">@BAGArt</a>
+</footer>
+
+<!-- ═══════════ SCRIPT ═══════════ -->
+<script>
+    /* ── Language System ── */
+    let lang = localStorage.getItem('ab-lang') || 'en';
+
+    function applyLang(l) {
+        lang = l;
+        localStorage.setItem('ab-lang', l);
+
+        // Toggle .l-en / .l-ru visibility
+        document.querySelectorAll('.l-en').forEach(el => {
+            el.style.display = l === 'en' ? '' : 'none';
+        });
+        document.querySelectorAll('.l-ru').forEach(el => {
+            el.style.display = l === 'ru' ? '' : 'none';
+        });
+
+        // Update lang buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === l);
+        });
+
+        // Update <html lang> and <title>
+        document.documentElement.lang = l;
+        document.title = l === 'ru'
+            ? 'Артур Балтаев — Веб-архитектор'
+            : 'Artur Baltaev — Architect Web Developer';
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+    });
+
+    applyLang(lang);
+
+    document.getElementById('exp-years').textContent = (new Date().getFullYear() - 2008) + '+';
+
+    const photoImg = document.getElementById('hero-photo-img');
+    const otwBadge = document.getElementById('otw-badge');
+    if (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.openToWork) {
+        photoImg.src = './oppen_to_work.jpg';
+        photoImg.classList.add('otw');
+        if (otwBadge) otwBadge.style.display = '';
+    } else {
+        photoImg.src = './photo.jpg';
+    }
+
+    /* ── Scroll progress bar ── */
+    const scrollBar = document.getElementById('scroll-bar');
+    window.addEventListener('scroll', () => {
+        const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+        scrollBar.style.width = Math.min(pct, 100) + '%';
+    }, {passive: true});
+
+    /* ── Nav: glassmorphism on scroll + active link ── */
+    const mainNav = document.getElementById('main-nav');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('section[id]');
+
+    window.addEventListener('scroll', () => {
+        mainNav.classList.toggle('scrolled', window.scrollY > 20);
+    }, {passive: true});
+
+    const secObserver = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                navLinks.forEach(a => {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+                });
+            }
+        });
+    }, {threshold: 0.25});
+
+    sections.forEach(s => secObserver.observe(s));
+
+    /* ── Fade-up animation ── */
+    const fadeObserver = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) e.target.classList.add('in');
+        });
+    }, {threshold: 0.08});
+
+    document.querySelectorAll('.fade-up').forEach(el => fadeObserver.observe(el));
+
+    /* ── Toggle experience cards ── */
+    function toggleExp(card) {
+        const wasOpen = card.classList.contains('open');
+
+        document.querySelectorAll('.exp-card.open').forEach(c => c.classList.remove('open'));
+        if (!wasOpen) card.classList.add('open');
+    }
+
+    /* ── Slide navigation: keyboard + prev/next ── */
+    const slideIds = ['hero', 'skills', 'experience', 'education', 'projects'];
+
+    function getCurrentSlideIndex() {
+        const y = window.scrollY;
+        let idx = 0;
+        slideIds.forEach((id, i) => {
+            const el = document.getElementById(id);
+            if (el && el.offsetTop <= y + 150) idx = i;
+        });
+        return idx;
+    }
+
+    function goToSlide(index) {
+        const i = Math.max(0, Math.min(index, slideIds.length - 1));
+        const el = document.getElementById(slideIds[i]);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    document.getElementById('slide-prev')?.addEventListener('click', () => goToSlide(getCurrentSlideIndex() - 1));
+    document.getElementById('slide-next')?.addEventListener('click', () => goToSlide(getCurrentSlideIndex() + 1));
+
+    document.addEventListener('keydown', (e) => {
+        if (e.target.closest('input, textarea, [contenteditable]')) return;
+        if (['ArrowDown', 'ArrowRight'].includes(e.key)) {
+            e.preventDefault();
+            goToSlide(getCurrentSlideIndex() + 1);
+        } else if (['ArrowUp', 'ArrowLeft'].includes(e.key)) {
+            e.preventDefault();
+            goToSlide(getCurrentSlideIndex() - 1);
+        }
+    });
+
+    /* ── Update slide nav dots on scroll ── */
+    const slideNavLinks = document.querySelectorAll('.slide-nav a');
+    const updateSlideNav = () => {
+        const idx = getCurrentSlideIndex();
+        slideNavLinks.forEach((a, i) => a.classList.toggle('active', i === idx));
+    };
+    window.addEventListener('scroll', updateSlideNav, { passive: true });
+    updateSlideNav();
+</script>
+</body>
+</html>
