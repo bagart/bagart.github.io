@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Artur Baltaev — Architect Web Developer, Remote</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --text: #1a1a2e;
+            --muted: #4a5568;
+            --primary: #4f46e5;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 11pt;
+            line-height: 1.45;
+            color: var(--text);
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.85rem;
+            color: var(--primary);
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+        }
+        .back-link:hover { text-decoration: underline; }
+        @media print {
+            body { padding: 1rem; }
+            .back-link { display: none; }
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+        .subtitle {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1.5rem;
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+        }
+        .meta a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .meta a:hover { text-decoration: underline; }
+        h2 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+            margin: 1.5rem 0 0.75rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .job {
+            margin-bottom: 1.25rem;
+        }
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .job-company {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .job-period {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+        .job-role {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin: 0.15rem 0 0.5rem;
+        }
+        .job ul {
+            padding-left: 1.25rem;
+            margin: 0.25rem 0;
+            font-size: 0.9rem;
+        }
+        .job li { margin-bottom: 0.2rem; }
+        .stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+        }
+        .stack span {
+            background: #f1f5f9;
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .skills-list {
+            columns: 2;
+            column-gap: 2rem;
+            font-size: 0.9rem;
+        }
+        .skills-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .skills-list li {
+            padding: 0.2rem 0;
+            border-bottom: 1px dotted var(--border);
+        }
+        .edu-block {
+            margin-bottom: 1rem;
+        }
+        .edu-name { font-weight: 700; }
+        .edu-detail { font-size: 0.9rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+
+<a href="./index.html" class="back-link">← Back to landing</a>
+
+<h1>Artur Baltaev</h1>
+<p class="subtitle">Architect Web Developer · Senior Full-Stack Engineer</p>
+<p class="subtitle">SRE · DBA · High-Traffic · Big-Data · International #Remote #Relocate</p>
+
+<div class="meta">
+    <a href="mailto:Baltaev.Artur@gmail.com">Baltaev.Artur@gmail.com</a>
+    <a href="https://github.com/bagart" target="_blank" rel="noopener">github.com/bagart</a>
+    <a href="https://t.me/BAGArt" target="_blank" rel="noopener">@BAGArt</a>
+    <span>Tel: +7 (926) 331-95-57</span>
+</div>
+
+<h2>Skills</h2>
+<div class="skills-list">
+    <ul>
+        <li>Languages: PHP 3→8.5, JavaScript/TS, Perl, SQL</li>
+        <li>DB: *SQL, NoSQL, BigQuery, Spanner, Pl/PgSQL, ClickHouse, ElasticSearch, Sphinx, Redis</li>
+        <li>Backend: Laravel/Lumen, Symfony, Node.js, MediaWiki, onPHP, Yii</li>
+        <li>Frontend: React.js, Vue.js, async SPA, PWA</li>
+        <li>Patterns: SOLID, GRASP, DDD, CQRS+ES</li>
+        <li>API: Stripe, PayPal, Paddle, oAuth, Auth0, gRPC, Swagger</li>
+        <li>Cloud: Docker, Kubernetes, AWS, GCloud, Azure</li>
+        <li>Testing: PHPUnit, unit, functional, stress, security audit</li>
+    </ul>
+</div>
+
+<h2>Experience</h2>
+
+<div class="job">
+    <div class="job-header">
+        <span class="job-company">Big Medical CRM, US (NDA)</span>
+        <span class="job-period">Mar 2022 — Nov 2025</span>
+    </div>
+    <div class="job-role">Senior Backend Developer · HIPAA Certified</div>
+    <ul>
+        <li>Full architecture & development of Facet Search Engine for medical data</li>
+        <li>BigData with complex SQL in BigQuery — typical query 30–200 KB, deep chain rules</li>
+        <li>Post-processing 1B+ raw lines: aggregate, normalize, serve via API</li>
+        <li>Migration from BigQuery + external ML to distributed GCloud Spanner</li>
+        <li>Cloud IAM permission layers to data columns</li>
+        <li>Thousands of SQL rules (medicine taxonomy) processed via queues</li>
+    </ul>
+    <div class="stack">
+        <span>PHP 8.4</span><span>Laravel</span><span>BigQuery</span><span>Spanner</span>
+        <span>Kubernetes</span><span>MSA</span><span>PubSub</span><span>Swagger</span>
+    </div>
+</div>
+
+<div class="job">
+    <div class="job-header">
+        <span class="job-company">Booking B2B Platform, International</span>
+        <span class="job-period">Aug 2020 — Mar 2022</span>
+    </div>
+    <div class="job-role">Team Lead · Senior Backend Developer</div>
+    <ul>
+        <li>Solo backend development from scratch to MVP (from markups and discussions)</li>
+        <li>Full Microservice Architecture with separated DB and API logic</li>
+        <li>REST API for SPA with Postman documentation and API tests</li>
+        <li>MSA-transactions and aggregation across services</li>
+        <li>Auth0, Paddle, Sanctum integrations; GitLab CI/CD pipeline</li>
+    </ul>
+    <div class="stack">
+        <span>PHP 8</span><span>Laravel</span><span>PostgreSQL</span><span>MSA</span>
+        <span>Kubernetes</span><span>Auth0</span><span>Paddle</span>
+    </div>
+</div>
+
+<div class="job">
+    <div class="job-header">
+        <span class="job-company">World TOP-5 Global Site (NDA), US — speedandfunction</span>
+        <span class="job-period">Dec 2019 — Jul 2020</span>
+    </div>
+    <div class="job-role">Senior Backend Developer · Core Re-engineering</div>
+    <ul>
+        <li>Deep core decoupling (GRASP, SOLID) and re-engineering</li>
+        <li>Refactored: Actions, Typed Content, Pages, Language, Searcher, API, Emailer</li>
+        <li>Add new SQL DB support for self-hosted extensions</li>
+        <li>Code review, PHPUnit coverage, all commits with public review</li>
+    </ul>
+    <div class="stack">
+        <span>PHP 7.2</span><span>SQL</span><span>PHPUnit</span><span>Docker</span><span>Gerrit</span>
+    </div>
+</div>
+
+<div class="job">
+    <div class="job-header">
+        <span class="job-company">Manychat.com, USA</span>
+        <span class="job-period">Feb — Jul 2019</span>
+    </div>
+    <div class="job-role">Senior Backend Developer · Visual Bot Builder, Facebook Messenger</div>
+    <ul>
+        <li>Re-engineering core backend: message processor and queue from Facebook</li>
+        <li>High-throughput message handling for bot interaction flows</li>
+    </ul>
+    <div class="stack">
+        <span>PHP</span><span>Yii</span><span>Codeception</span><span>React</span>
+    </div>
+</div>
+
+<div class="job">
+    <div class="job-header">
+        <span class="job-company">Gruzer — Logistics Auction & Taxi (B2B/B2C)</span>
+        <span class="job-period">Dec 2017 — Dec 2018</span>
+    </div>
+    <div class="job-role">Senior Architect · Team Lead</div>
+    <ul>
+        <li>Full SOA/Microservice Architecture with async service-bus</li>
+        <li>Real-time SPA with WebSocket live-updates and push notifications</li>
+        <li>Auction module: bookkeeping, bidding, group messaging</li>
+        <li>Billing: checkout, payment processing, balance, B2B/B2C, multicurrency</li>
+        <li>Maps: Yandex, Google, OpenStreetMap integration</li>
+    </ul>
+    <div class="stack">
+        <span>Laravel</span><span>Node.js</span><span>PostgreSQL</span><span>Socket.io</span>
+        <span>Kubernetes</span><span>Redis</span><span>Swagger</span>
+    </div>
+</div>
+
+<div class="job">
+    <div class="job-header">
+        <span class="job-company">Bionika — Medical Data Service</span>
+        <span class="job-period">Jun 2016 — Apr 2017</span>
+    </div>
+    <div class="job-role">Senior Fullstack Developer · Solo Architect + DevOps</div>
+    <ul>
+        <li>Solo: Frontend, Backend, DBA and DevOps — project from start to finish</li>
+        <li>Intelligent facet search engine with ElasticSearch as primary store</li>
+        <li>Data sync with public procurement APIs</li>
+    </ul>
+    <div class="stack">
+        <span>Laravel 5</span><span>Vue.js</span><span>PostgreSQL</span><span>ElasticSearch</span><span>Docker</span>
+    </div>
+</div>
+
+<div class="job">
+    <div class="job-header">
+        <span class="job-company">Taxi-Angel.ru · IMHOnet.ru · Rabota.ru</span>
+        <span class="job-period">2010 — 2016</span>
+    </div>
+    <div class="job-role">Senior Fullstack / Backend Developer · HighLoad optimization</div>
+    <ul>
+        <li>HighLoad: horizontal scaling, DB optimization, caching</li>
+        <li>Mobile API, billing, payment APIs, RTB, ElasticSearch</li>
+    </ul>
+    <div class="stack">
+        <span>PHP</span><span>Laravel</span><span>PostgreSQL</span><span>PL/PgSQL</span>
+        <span>Sphinx</span><span>ElasticSearch</span>
+    </div>
+</div>
+
+<p style="font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem;">+ Other projects: USA, UK, South Africa — PHP (Laravel, Symfony), FullStack (Vue.js, React.js)</p>
+
+<h2>Education</h2>
+<div class="edu-block">
+    <div class="edu-name">Chuvash State University · Bachelor</div>
+    <div class="edu-detail">Faculty of Economics · Major: Banks & Banking</div>
+</div>
+
+<h2>Language</h2>
+<ul>
+    <li>English — Advanced (full work)</li>
+    <li>Russian — Fluent (native)</li>
+</ul>
+
+<hr style="margin-top: 2rem; border: none; border-top: 1px solid var(--border);"/>
+<p style="font-size: 0.8rem; color: var(--muted); margin-top: 1rem;">
+    <a href="https://docs.google.com/document/d/1DqY9NsEAk6kdFgGgndrl_2T1ANx8G7MDFxxDLFT9lYg/" target="_blank" rel="noopener">Actual CV</a> · 
+    Landing: <a href="https://bagart.github.io/" target="_blank" rel="noopener">bagart.github.io</a> · 
+    Contact <a href="https://t.me/BAGArt" target="_blank" rel="noopener">@BAGArt</a>
+</p>
+</body>
+</html>
