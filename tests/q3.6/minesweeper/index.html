@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐉 Dragon Minesweeper</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Press+Start+2P&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #0a0a1a 0%, #1a0a2e 30%, #2d1b4e 60%, #1a0a2e 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'MedievalSharp', cursive;
+    overflow: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.2), transparent),
+      radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1px 1px at 80% 50%, rgba(255,255,255,0.2), transparent),
+      radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.15), transparent),
+      radial-gradient(1px 1px at 70% 90%, rgba(255,255,255,0.2), transparent),
+      radial-gradient(1px 1px at 90% 10%, rgba(255,255,255,0.25), transparent),
+      radial-gradient(2px 2px at 50% 50%, rgba(255,255,255,0.1), transparent),
+      radial-gradient(1px 1px at 30% 45%, rgba(255,255,255,0.2), transparent),
+      radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,0.15), transparent);
+    pointer-events: none;
+    z-index: 0;
+    animation: twinkle 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+
+  .fire-particles {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation: float-up linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes float-up {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+  }
+
+  .dragon-bg {
+    position: fixed;
+    font-size: 120px;
+    opacity: 0.03;
+    z-index: 0;
+    animation: dragon-fly 20s linear infinite;
+    filter: blur(1px);
+  }
+
+  @keyframes dragon-fly {
+    0% { transform: translate(-200px, 50vh) rotate(0deg) scale(1); }
+    50% { transform: translate(50vw, 30vh) rotate(10deg) scale(1.1); }
+    100% { transform: translate(calc(100vw + 200px), 50vh) rotate(0deg) scale(1); }
+  }
+
+  .game-container {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(145deg, rgba(20,10,40,0.9), rgba(40,20,60,0.9));
+    border: 3px solid rgba(180,100,255,0.3);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow:
+      0 0 40px rgba(140,60,255,0.3),
+      0 0 80px rgba(140,60,255,0.1),
+      inset 0 0 60px rgba(100,40,180,0.15);
+    backdrop-filter: blur(10px);
+  }
+
+  .game-container::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    border-radius: 22px;
+    background: linear-gradient(45deg, #ff6b35, #ff4500, #ff6b35, #ffaa00, #ff4500);
+    background-size: 400% 400%;
+    z-index: -1;
+    animation: border-glow 6s ease infinite;
+    opacity: 0.4;
+  }
+
+  @keyframes border-glow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #ff8c42;
+    text-shadow:
+      0 0 10px rgba(255,140,66,0.8),
+      0 0 30px rgba(255,100,40,0.4),
+      0 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+  }
+
+  .dragon-title {
+    display: inline-block;
+    animation: dragon-bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes dragon-bounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-5px) rotate(-3deg); }
+    75% { transform: translateY(-3px) rotate(3deg); }
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .controls button {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 14px;
+    padding: 8px 18px;
+    border: 2px solid rgba(180,100,255,0.4);
+    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(40,20,70,0.8), rgba(60,30,90,0.8));
+    color: #d4a5ff;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-shadow: 0 0 8px rgba(180,100,255,0.4);
+  }
+
+  .controls button:hover {
+    background: linear-gradient(145deg, rgba(60,30,100,0.9), rgba(80,40,120,0.9));
+    border-color: rgba(200,120,255,0.7);
+    box-shadow: 0 0 15px rgba(140,60,255,0.4);
+    transform: translateY(-2px);
+  }
+
+  .controls button.active {
+    background: linear-gradient(145deg, rgba(100,50,160,0.9), rgba(120,60,180,0.9));
+    border-color: #ff8c42;
+    color: #ffcc80;
+    box-shadow: 0 0 20px rgba(255,140,66,0.3);
+  }
+
+  .info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 12px;
+    border: 1px solid rgba(180,100,255,0.15);
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #d4a5ff;
+    font-size: 18px;
+  }
+
+  .info-item .icon {
+    font-size: 22px;
+  }
+
+  .info-item .value {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 14px;
+    color: #ff8c42;
+    text-shadow: 0 0 8px rgba(255,140,66,0.5);
+    min-width: 40px;
+    text-align: center;
+  }
+
+  .board {
+    display: inline-grid;
+    gap: 2px;
+    padding: 8px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 12px;
+    border: 2px solid rgba(180,100,255,0.2);
+  }
+
+  .cell {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    user-select: none;
+    border: 1px solid rgba(180,100,255,0.1);
+  }
+
+  .cell.hidden {
+    background: linear-gradient(145deg, #3a2060, #2a1548);
+    box-shadow:
+      inset 1px 1px 2px rgba(140,100,200,0.3),
+      inset -1px -1px 2px rgba(0,0,0,0.3),
+      0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .cell.hidden:hover {
+    background: linear-gradient(145deg, #4a2a75, #3a1f5e);
+    box-shadow:
+      inset 1px 1px 2px rgba(140,100,200,0.4),
+      0 0 12px rgba(140,60,255,0.3);
+    transform: scale(1.05);
+    z-index: 2;
+  }
+
+  .cell.revealed {
+    background: rgba(15,5,30,0.8);
+    cursor: default;
+  }
+
+  .cell.mine-hit {
+    animation: explode 0.5s ease-out;
+  }
+
+  @keyframes explode {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.4); background: rgba(255,60,20,0.6); }
+    60% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+  }
+
+  .cell.mine-show {
+    animation: pulse-mine 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-mine {
+    0%, 100% { box-shadow: inset 0 0 8px rgba(255,60,20,0.3); }
+    50% { box-shadow: inset 0 0 16px rgba(255,60,20,0.6), 0 0 10px rgba(255,60,20,0.3); }
+  }
+
+  .cell.flagged {
+    background: linear-gradient(145deg, #4a2060, #351548);
+  }
+
+  .cell .flag-anim {
+    animation: plant-flag 0.3s ease-out;
+  }
+
+  @keyframes plant-flag {
+    0% { transform: scale(0) rotate(-45deg); }
+    60% { transform: scale(1.3) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  .cell .dragon-reveal {
+    animation: dragon-reveal 0.6s ease-out;
+  }
+
+  @keyframes dragon-reveal {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    50% { transform: scale(1.3) rotate(10deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  /* Number colors with glow */
+  .cell[data-num="1"] { color: #7eb8ff; text-shadow: 0 0 8px rgba(126,184,255,0.6); }
+  .cell[data-num="2"] { color: #7eff9b; text-shadow: 0 0 8px rgba(126,255,155,0.6); }
+  .cell[data-num="3"] { color: #ff7eb3; text-shadow: 0 0 8px rgba(255,126,179,0.6); }
+  .cell[data-num="4"] { color: #c58bff; text-shadow: 0 0 8px rgba(197,139,255,0.6); }
+  .cell[data-num="5"] { color: #ff8c42; text-shadow: 0 0 8px rgba(255,140,66,0.6); }
+  .cell[data-num="6"] { color: #42e5ff; text-shadow: 0 0 8px rgba(66,229,255,0.6); }
+  .cell[data-num="7"] { color: #ff4242; text-shadow: 0 0 8px rgba(255,66,66,0.6); }
+  .cell[data-num="8"] { color: #aaaaaa; text-shadow: 0 0 8px rgba(170,170,170,0.6); }
+
+  .message-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
+  }
+
+  .message-overlay.show { display: flex; }
+
+  .message-box {
+    background: linear-gradient(145deg, #1a0a30, #2d1550);
+    border: 3px solid rgba(180,100,255,0.4);
+    border-radius: 24px;
+    padding: 40px 50px;
+    text-align: center;
+    box-shadow:
+      0 0 60px rgba(140,60,255,0.3),
+      0 0 120px rgba(140,60,255,0.1);
+    animation: message-in 0.5s ease-out;
+  }
+
+  @keyframes message-in {
+    0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .message-box .emoji {
+    font-size: 64px;
+    display: block;
+    margin-bottom: 16px;
+    animation: dragon-bounce 1s ease-in-out infinite;
+  }
+
+  .message-box h2 {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .message-box h2.win {
+    color: #ffcc00;
+    text-shadow: 0 0 20px rgba(255,204,0,0.6);
+  }
+
+  .message-box h2.lose {
+    color: #ff4444;
+    text-shadow: 0 0 20px rgba(255,68,68,0.6);
+  }
+
+  .message-box p {
+    color: #d4a5ff;
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .message-box button {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 18px;
+    padding: 12px 36px;
+    border: 2px solid #ff8c42;
+    border-radius: 16px;
+    background: linear-gradient(145deg, rgba(100,50,160,0.8), rgba(80,40,130,0.8));
+    color: #ffcc80;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .message-box button:hover {
+    background: linear-gradient(145deg, rgba(120,60,180,0.9), rgba(100,50,150,0.9));
+    box-shadow: 0 0 20px rgba(255,140,66,0.4);
+    transform: translateY(-2px);
+  }
+
+  .cell-countdown {
+    position: absolute;
+    font-size: 24px;
+    color: #ff4444;
+    font-weight: bold;
+    pointer-events: none;
+    animation: countdown-float 1s ease-out forwards;
+    z-index: 10;
+    text-shadow: 0 0 10px rgba(255,0,0,0.8);
+  }
+
+  @keyframes countdown-float {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
+  }
+
+  .smoke-effect {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,100,30,0.3), transparent 70%);
+    pointer-events: none;
+    animation: smoke-rise 1s ease-out forwards;
+    z-index: 5;
+  }
+
+  @keyframes smoke-rise {
+    0% { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(2) translateY(-30px); opacity: 0; }
+  }
+
+  .difficulty-label {
+    color: #9a7abf;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .cell { width: 28px; height: 28px; font-size: 13px; }
+    h1 { font-size: 20px; }
+    .game-container { padding: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fire-particles" id="particles"></div>
+<div class="dragon-bg">🐉</div>
+
+<div class="game-container">
+  <h1>
+    <span class="dragon-title">🐉</span>
+    Dragon Minesweeper
+    <span class="dragon-title">🔥</span>
+  </h1>
+
+  <div class="difficulty-label">Выберите сложность:</div>
+  <div class="controls">
+    <button onclick="initGame(8,8,10)" id="btn-easy">🥚 Easy</button>
+    <button onclick="initGame(12,12,30)" id="btn-medium" class="active">🐣 Medium</button>
+    <button onclick="initGame(16,16,60)" id="btn-hard">🐉 Hard</button>
+  </div>
+
+  <div class="info-bar">
+    <div class="info-item">
+      <span class="icon">🐲</span>
+      <span class="value" id="mine-count">30</span>
+    </div>
+    <div class="info-item">
+      <span class="icon">🔥</span>
+      <span class="value" id="timer">000</span>
+    </div>
+    <div class="info-item">
+      <span class="icon">🏆</span>
+      <span class="value" id="flag-count">0</span>
+    </div>
+  </div>
+
+  <div class="board" id="board" oncontextmenu="return false"></div>
+</div>
+
+<div class="message-overlay" id="overlay">
+  <div class="message-box">
+    <span class="emoji" id="msg-emoji">🐉</span>
+    <h2 id="msg-title">Victory!</h2>
+    <p id="msg-text">The dragon is slain!</p>
+    <button onclick="closeMessage(); initGame(currentRows, currentCols, currentMines);">🔄 Again</button>
+  </div>
+</div>
+
+<script>
+let currentRows = 12, currentCols = 12, currentMines = 30;
+let board = [], revealed = [], flagged = [], mineMap = [];
+let gameOver = false, gameStarted = false, firstClick = true;
+let timerInterval, seconds = 0, flagCount = 0;
+
+function initGame(rows, cols, mines) {
+  currentRows = rows; currentCols = cols; currentMines = mines;
+  gameOver = false; gameStarted = false; firstClick = true;
+  seconds = 0; flagCount = 0;
+  clearInterval(timerInterval);
+  document.getElementById('timer').textContent = '000';
+  document.getElementById('mine-count').textContent = mines;
+  document.getElementById('flag-count').textContent = '0';
+
+  board = Array.from({length: rows}, () => Array(cols).fill(0));
+  revealed = Array.from({length: rows}, () => Array(cols).fill(false));
+  flagged = Array.from({length: rows}, () => Array(cols).fill(false));
+  mineMap = Array.from({length: rows}, () => Array(cols).fill(false));
+
+  document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
+  if (rows === 8) document.getElementById('btn-easy').classList.add('active');
+  else if (rows === 12) document.getElementById('btn-medium').classList.add('active');
+  else document.getElementById('btn-hard').classList.add('active');
+
+  renderBoard();
+}
+
+function placeMines(safeR, safeC) {
+  let placed = 0;
+  const safeCells = new Set();
+  for (let dr = -1; dr <= 1; dr++)
+    for (let dc = -1; dc <= 1; dc++)
+      safeCells.add((safeR+dr) + ',' + (safeC+dc));
+
+  while (placed < currentMines) {
+    const r = Math.floor(Math.random() * currentRows);
+    const c = Math.floor(Math.random() * currentCols);
+    if (mineMap[r][c] || safeCells.has(r+','+c)) continue;
+    mineMap[r][c] = true;
+    placed++;
+  }
+
+  for (let r = 0; r < currentRows; r++)
+    for (let c = 0; c < currentCols; c++) {
+      if (mineMap[r][c]) { board[r][c] = -1; continue; }
+      let count = 0;
+      for (let dr = -1; dr <= 1; dr++)
+        for (let dc = -1; dc <= 1; dc++) {
+          const nr = r+dr, nc = c+dc;
+          if (nr >= 0 && nr < currentRows && nc >= 0 && nc < currentCols && mineMap[nr][nc]) count++;
+        }
+      board[r][c] = count;
+    }
+}
+
+function renderBoard() {
+  const boardEl = document.getElementById('board');
+  boardEl.style.gridTemplateColumns = `repeat(${currentCols}, 36px)`;
+  boardEl.innerHTML = '';
+
+  for (let r = 0; r < currentRows; r++) {
+    for (let c = 0; c < currentCols; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell hidden';
+      cell.dataset.r = r;
+      cell.dataset.c = c;
+      cell.addEventListener('click', () => handleClick(r, c));
+      cell.addEventListener('contextmenu', (e) => { e.preventDefault(); handleRightClick(r, c); });
+      boardEl.appendChild(cell);
+    }
+  }
+
+  if (window.innerWidth <= 600) {
+    boardEl.style.gridTemplateColumns = `repeat(${currentCols}, 28px)`;
+  }
+}
+
+function getCell(r, c) {
+  return document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
+}
+
+function handleClick(r, c) {
+  if (gameOver || flagged[r][c] || revealed[r][c]) return;
+
+  if (firstClick) {
+    firstClick = false;
+    placeMines(r, c);
+    startTimer();
+    gameStarted = true;
+  }
+
+  if (mineMap[r][c]) {
+    gameOver = true;
+    clearInterval(timerInterval);
+    revealMines(r, c);
+    setTimeout(() => showMessage(false), 800);
+    return;
+  }
+
+  revealCell(r, c);
+  checkWin();
+}
+
+function handleRightClick(r, c) {
+  if (gameOver || revealed[r][c]) return;
+
+  const cell = getCell(r, c);
+  if (flagged[r][c]) {
+    flagged[r][c] = false;
+    cell.textContent = '';
+    cell.classList.remove('flagged');
+    flagCount--;
+  } else {
+    flagged[r][c] = true;
+    cell.textContent = '🚩';
+    cell.classList.add('flagged');
+    const anim = document.createElement('span');
+    anim.className = 'flag-anim';
+    cell.appendChild(anim);
+    flagCount++;
+  }
+  document.getElementById('flag-count').textContent = flagCount;
+  document.getElementById('mine-count').textContent = currentMines - flagCount;
+}
+
+function revealCell(r, c) {
+  if (r < 0 || r >= currentRows || c < 0 || c >= currentCols) return;
+  if (revealed[r][c] || flagged[r][c] || mineMap[r][c]) return;
+
+  revealed[r][c] = true;
+  const cell = getCell(r, c);
+  cell.classList.remove('hidden');
+  cell.classList.add('revealed');
+
+  if (board[r][c] > 0) {
+    cell.textContent = board[r][c];
+    cell.dataset.num = board[r][c];
+  } else if (board[r][c] === 0) {
+    cell.textContent = '';
+    for (let dr = -1; dr <= 1; dr++)
+      for (let dc = -1; dc <= 1; dc++) {
+        if (dr === 0 && dc === 0) continue;
+        revealCell(r+dr, c+dc);
+      }
+  }
+}
+
+function revealMines(hitR, hitC) {
+  const dragonEmojis = ['🐉','🐲','🔥','💀','☠️'];
+  for (let r = 0; r < currentRows; r++) {
+    for (let c = 0; c < currentCols; c++) {
+      const cell = getCell(r, c);
+      if (mineMap[r][c]) {
+        cell.classList.remove('hidden');
+        cell.classList.add('mine-show');
+        if (r === hitR && c === hitC) {
+          cell.classList.add('mine-hit');
+          cell.textContent = '🐉';
+          cell.classList.add('dragon-reveal');
+        } else {
+          cell.textContent = dragonEmojis[Math.floor(Math.random() * dragonEmojis.length)];
+        }
+      } else if (flagged[r][c]) {
+        cell.classList.remove('hidden');
+        cell.textContent = '✅';
+      }
+    }
+  }
+}
+
+function checkWin() {
+  let unrevealedSafe = 0;
+  for (let r = 0; r < currentRows; r++)
+    for (let c = 0; c < currentCols; c++)
+      if (!mineMap[r][c] && !revealed[r][c]) unrevealedSafe++;
+
+  if (unrevealedSafe === 0) {
+    gameOver = true;
+    clearInterval(timerInterval);
+    for (let r = 0; r < currentRows; r++)
+      for (let c = 0; c < currentCols; c++)
+        if (!mineMap[r][c] && !flagged[r][c]) {
+          flagged[r][c] = true;
+          const cell = getCell(r, c);
+          cell.textContent = '🚩';
+          cell.classList.add('flagged');
+        }
+    flagCount = currentMines;
+    document.getElementById('flag-count').textContent = flagCount;
+    document.getElementById('mine-count').textContent = 0;
+    setTimeout(() => showMessage(true), 400);
+  }
+}
+
+function startTimer() {
+  seconds = 0;
+  timerInterval = setInterval(() => {
+    seconds++;
+    document.getElementById('timer').textContent = String(seconds).padStart(3, '0');
+    if (seconds >= 999) clearInterval(timerInterval);
+  }, 1000);
+}
+
+function showMessage(won) {
+  const overlay = document.getElementById('overlay');
+  const emoji = document.getElementById('msg-emoji');
+  const title = document.getElementById('msg-title');
+  const text = document.getElementById('msg-text');
+
+  if (won) {
+    emoji.textContent = '🏆';
+    title.textContent = '🐉 Dragon Slain! 🐉';
+    title.className = 'win';
+    text.textContent = `You conquered the dragon's lair in ${seconds} seconds!`;
+  } else {
+    emoji.textContent = '💀';
+    title.textContent = '🔥 Consumed by Flames! 🔥';
+    title.className = 'lose';
+    text.textContent = 'The dragon has won... Try again, brave hero!';
+  }
+
+  overlay.classList.add('show');
+}
+
+function closeMessage() {
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// Fire particles
+function createParticles() {
+  const container = document.getElementById('particles');
+  const colors = ['rgba(255,100,30,0.6)', 'rgba(255,180,50,0.5)', 'rgba(200,60,255,0.4)', 'rgba(255,60,60,0.5)'];
+
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDuration = (4 + Math.random() * 8) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.width = (2 + Math.random() * 4) + 'px';
+    p.style.height = p.style.width;
+    container.appendChild(p);
+  }
+}
+
+createParticles();
+initGame(12, 12, 30);
+</script>
+</body>
+</html>
