@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Models Manager Rating</title>
+
+<!-- Public CSS -->
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+<style>
+body {
+    background: #f5f7fa;
+}
+
+table {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.rating-good {
+    background-color: #d4edda !important;
+}
+
+.rating-medium {
+    background-color: #fff3cd !important;
+}
+
+.rating-bad {
+    background-color: #f8d7da !important;
+}
+
+.rating-none {
+    background-color: #ececec !important;
+}
+
+.model-name {
+    font-weight: bold;
+}
+
+.strengths {
+    max-width: 300px;
+    white-space: normal;
+}
+
+.weaknesses {
+    max-width: 300px;
+    white-space: normal;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid py-4">
+
+<h1 class="mb-4">AI Models Ranking for Managers</h1>
+
+<div class="table-responsive">
+
+<table class="table table-bordered table-striped table-hover align-middle">
+
+<thead class="table-dark">
+
+<tr>
+<th>Модель</th>
+<th>Стоимость</th>
+<th>Место</th>
+
+<th>Презентации (PPTX/PDF/Slides)</th>
+<th>Редактирование презентаций</th>
+
+<th>Генерация изображений</th>
+<th>Редактирование изображений</th>
+<th>Текст на изображениях</th>
+
+<th>Чтение PDF</th>
+<th>Чтение DOCX</th>
+<th>Чтение XLSX</th>
+<th>Анализ Excel</th>
+<th>Диаграммы и графики</th>
+
+<th>Word</th>
+<th>PowerPoint</th>
+<th>Excel</th>
+
+<th>Microsoft 365</th>
+<th>Google Workspace</th>
+<th>Outlook</th>
+<th>Gmail</th>
+
+<th>Поиск в интернете</th>
+<th>Deep Research</th>
+<th>Большие документы</th>
+
+<th>OCR</th>
+<th>Рукописный текст</th>
+
+<th>Видео</th>
+<th>Аудио</th>
+<th>Транскрипция встреч</th>
+
+<th>Переводы</th>
+<th>Деловые письма</th>
+<th>Отчёты</th>
+<th>KPI и дашборды</th>
+
+<th>Агентные функции</th>
+
+<th>Управление Windows</th>
+<th>Управление macOS</th>
+<th>Управление iPad</th>
+
+<th>Автоматизация задач</th>
+<th>API</th>
+<th>Работа в команде</th>
+
+<th>Мультиязычность</th>
+<th>Скорость</th>
+<th>Надёжность</th>
+
+<th>Сильные стороны</th>
+<th>Слабые стороны</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td class="model-name">
+GPT-5
+</td>
+
+<td>$$$</td>
+
+<td>#1</td>
+
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+
+<td class="rating-medium">🟡</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+
+<td class="rating-good">✅</td>
+
+<td class="rating-medium">🟡</td>
+<td class="rating-medium">🟡</td>
+<td class="rating-medium">🟡</td>
+
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+<td class="rating-good">✅</td>
+
+<td class="strengths">
+Сильная универсальность, Deep Research, мультимодальность, документы, изображения, агентные функции.
+</td>
+
+<td class="weaknesses">
+Не лучший контроль компьютера, высокая стоимость при активном использовании.
+</td>
+
+</tr>
+
+<!-- Дополнительные строки -->
+<!-- Claude 4 Opus -->
+<!-- Gemini 2.5 Pro -->
+<!-- Grok 4 -->
+<!-- Microsoft Copilot -->
+<!-- DeepSeek -->
+<!-- Perplexity -->
+<!-- Mistral -->
+<!-- Qwen -->
+<!-- Llama -->
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>
