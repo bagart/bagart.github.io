@@ -3,274 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Models Matrix 2026</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>AI Models Matrix 2026 for Managers</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .sticky-col { position: sticky; left: 0; background-color: #1e293b; z-index: 20; }
-        tr:nth-child(even) .sticky-col { background-color: #111827; }
-        tr:hover .sticky-col { background-color: #334155; }
-        .sticky-header { position: sticky; top: 0; z-index: 30; }
-        .custom-scrollbar::-webkit-scrollbar { height: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        :root {
+            --primary: #1e293b;
+            --accent: #2563eb;
+            --bg: #f8fafc;
+            --border: #e2e8f0;
+            --text: #0f172a;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            padding: 20px;
+            overflow: hidden;
+        }
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 0;
+        }
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background-color: #1d4ed8;
+        }
+        .btn.active {
+            background-color: #059669;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 70vh;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            font-size: 13px;
+        }
+        /* Двухфазная шапка и фиксация */
+        th, td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            white-space: nowrap;
+            text-align: center;
+        }
+        th {
+            background: #f1f5f9;
+            color: var(--primary);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        tr.super-header th {
+            top: 0;
+            z-index: 11;
+            background: var(--primary);
+            color: white;
+        }
+        tr.sub-header th {
+            top: 38px; /* Высота верхней шапки */
+            z-index: 11;
+        }
+        /* Фиксация первой колонки */
+        td:first-child, th:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+            background: white;
+            text-align: left;
+            font-weight: 500;
+        }
+        th:first-child {
+            z-index: 12;
+        }
+        tr.super-header th:first-child {
+            background: var(--primary);
+        }
+        tr.sub-header th:first-child {
+            background: #f1f5f9;
+        }
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+        tr:hover td:first-child {
+            background-color: #f1f5f9;
+        }
+        .hidden-col {
+            display: none !important;
+        }
+        .badge-info {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 5px;
+        }
     </style>
 </head>
-<body class="p-4 md:p-8">
-    <div class="max-w-7xl mx-auto">
-        <header class="mb-6">
-            <h1 class="text-3xl font-bold text-slate-100">Сравнительный анализ AI-моделей (Середина 2026)</h1>
-            <p class="text-slate-400 text-sm mt-1">Инструмент для CIO, PM и аналитиков. Оценка по 4-уровневой шкале.</p>
-        </header>
+<body>
 
-        <div class="flex flex-wrap gap-3 mb-6">
-            <button id="btn-all" onclick="resetFilters()" class="px-4 py-2 bg-indigo-600 text-white font-medium text-xs rounded hover:bg-indigo-500 transition">Показать все</button>
-            <button id="btn-hide" onclick="filterUnique()" class="px-4 py-2 bg-slate-700 text-slate-200 font-medium text-xs rounded hover:bg-slate-600 transition">Скрыть колонки с одинаковыми значениями</button>
+<div class="container">
+    <div class="header-actions">
+        <div>
+            <h1>Сравнительный анализ бизнес-возможностей AI (Середина 2026)</h1>
+            <div class="badge-info">Колонки с одинаковыми значениями скрыты автоматически для фокуса на различиях.</div>
         </div>
-
-        <div class="overflow-x-auto custom-scrollbar border border-slate-700 rounded-lg bg-slate-900 shadow-xl">
-            <table id="matrix-table" class="w-full text-left border-collapse text-xs">
-                <thead>
-                    <tr class="bg-slate-800 text-slate-300 border-b border-slate-700">
-                        <th rowspan="2" class="p-3 sticky-col bg-slate-800 border-r border-slate-700 text-sm font-semibold z-40 min-w-[160px]">Модель / Линейка</th>
-                        <th colspan="2" data-group="base" class="p-2 border-r border-slate-700 text-center font-bold text-slate-100 bg-slate-800/50">Базовые параметры</th>
-                        <th colspan="2" data-group="docs" class="p-2 border-r border-slate-700 text-center font-bold text-slate-100 bg-blue-950/40">Docs (Текст)</th>
-                        <th colspan="2" data-group="office" class="p-2 border-r border-slate-700 text-center font-bold text-slate-100 bg-emerald-950/40">Office (Таблицы/Презентации)</th>
-                        <th colspan="2" data-group="images" class="p-2 border-r border-slate-700 text-center font-bold text-slate-100 bg-purple-950/40">Images (Мультимодальность)</th>
-                        <th colspan="2" data-group="agents" class="p-2 border-r border-slate-700 text-center font-bold text-slate-100 bg-amber-950/40">Agents (Автоматизация)</th>
-                        <th colspan="2" data-group="research" class="p-2 text-center font-bold text-slate-100 bg-rose-950/40">Research (Аналитика)</th>
-                    </tr>
-                    <tr class="bg-slate-800/90 text-slate-400 border-b border-slate-700 sticky-header">
-                        <th data-col="0" class="p-2 border-r border-slate-700 text-center font-medium min-w-[80px]">Стоимость</th>
-                        <th data-col="1" class="p-2 border-r border-slate-700 text-center font-medium min-w-[100px]">Контекст (Т)</th>
-                        <th data-col="2" class="p-2 border-r border-slate-700 text-center font-medium min-w-[100px]">100+ стр.</th>
-                        <th data-col="3" class="p-2 border-r border-slate-700 text-center font-medium min-w-[100px]">PDF/Саммари</th>
-                        <th data-col="4" class="p-2 border-r border-slate-700 text-center font-medium min-w-[100px]">Excel/Python</th>
-                        <th data-col="5" class="p-2 border-r border-slate-700 text-center font-medium min-w-[100px]">PowerPoint</th>
-                        <th data-col="6" class="p-2 border-r border-slate-700 text-center font-medium min-w-[100px]">Распозн. схем</th>
-                        <th data-col="7" class="p-2 border-r border-slate-700 text-center font-medium min-w-[100px]">Генер. конц.</th>
-                        <th data-col="8" class="p-2 border-r border-slate-700 text-center font-medium min-w-[100px]">AI-агенты</th>
-                        <th data-col="9" class="p-2 border-r border-slate-700 text-center font-medium min-w-[100px]">API/Tools</th>
-                        <th data-col="10" class="p-2 border-r border-slate-700 text-center font-medium min-w-[100px]">Reasoning/CoT</th>
-                        <th data-col="11" class="p-2 text-center font-medium min-w-[100px]">Поиск / Факт</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-800 text-slate-300">
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 font-semibold text-slate-100 sticky-col border-r border-slate-700">OpenAI GPT-5</td>
-                        <td data-col="0" class="p-2 text-center border-r border-slate-800 font-mono text-amber-400">$$$$</td>
-                        <td data-col="1" class="p-2 text-center border-r border-slate-800 font-mono">256K</td>
-                        <td data-col="2" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="3" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="4" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="5" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="6" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="7" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="8" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="9" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="10" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="11" class="p-2 text-center text-emerald-400 font-medium">✅</td>
-                    </tr>
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 font-semibold text-slate-100 sticky-col border-r border-slate-700">Claude 4 Opus</td>
-                        <td data-col="0" class="p-2 text-center border-r border-slate-800 font-mono text-amber-400">$$$$$</td>
-                        <td data-col="1" class="p-2 text-center border-r border-slate-800 font-mono">300K</td>
-                        <td data-col="2" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="3" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="4" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="5" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="6" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="7" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="8" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="9" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="10" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="11" class="p-2 text-center text-amber-400 font-medium">🟡</td>
-                    </tr>
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 font-semibold text-slate-100 sticky-col border-r border-slate-700">Gemini 3.0 Pro</td>
-                        <td data-col="0" class="p-2 text-center border-r border-slate-800 font-mono text-amber-400">$$$</td>
-                        <td data-col="1" class="p-2 text-center border-r border-slate-800 font-mono">2000K</td>
-                        <td data-col="2" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="3" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="4" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="5" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="6" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="7" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="8" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="9" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="10" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="11" class="p-2 text-center text-emerald-400 font-medium">✅</td>
-                    </tr>
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 font-semibold text-slate-100 sticky-col border-r border-slate-700">M365 Copilot</td>
-                        <td data-col="0" class="p-2 text-center border-r border-slate-800 font-mono text-amber-400">$$$</td>
-                        <td data-col="1" class="p-2 text-center border-r border-slate-800 font-mono">128K</td>
-                        <td data-col="2" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="3" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="4" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="5" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="6" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="7" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="8" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="9" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="10" class="p-2 text-center border-r border-slate-800 text-orange-400 font-medium">⚠️</td>
-                        <td data-col="11" class="p-2 text-center text-emerald-400 font-medium">✅</td>
-                    </tr>
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 font-semibold text-slate-100 sticky-col border-r border-slate-700">DeepSeek-R1</td>
-                        <td data-col="0" class="p-2 text-center border-r border-slate-800 font-mono text-amber-400">$</td>
-                        <td data-col="1" class="p-2 text-center border-r border-slate-800 font-mono">128K</td>
-                        <td data-col="2" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="3" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="4" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="5" class="p-2 text-center border-r border-slate-800 text-rose-500 font-medium">❌</td>
-                        <td data-col="6" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="7" class="p-2 text-center border-r border-slate-800 text-rose-500 font-medium">❌</td>
-                        <td data-col="8" class="p-2 text-center border-r border-slate-800 text-orange-400 font-medium">⚠️</td>
-                        <td data-col="9" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="10" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="11" class="p-2 text-center text-amber-400 font-medium">🟡</td>
-                    </tr>
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 font-semibold text-slate-100 sticky-col border-r border-slate-700">Llama 4 (Instruct)</td>
-                        <td data-col="0" class="p-2 text-center border-r border-slate-800 font-mono text-amber-400">$</td>
-                        <td data-col="1" class="p-2 text-center border-r border-slate-800 font-mono">128K</td>
-                        <td data-col="2" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="3" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="4" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="5" class="p-2 text-center border-r border-slate-800 text-rose-500 font-medium">❌</td>
-                        <td data-col="6" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="7" class="p-2 text-center border-r border-slate-800 text-rose-500 font-medium">❌</td>
-                        <td data-col="8" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="9" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="10" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="11" class="p-2 text-center text-orange-400 font-medium">⚠️</td>
-                    </tr>
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 font-semibold text-slate-100 sticky-col border-r border-slate-700">Grok 4</td>
-                        <td data-col="0" class="p-2 text-center border-r border-slate-800 font-mono text-amber-400">$$</td>
-                        <td data-col="1" class="p-2 text-center border-r border-slate-800 font-mono">128K</td>
-                        <td data-col="2" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="3" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="4" class="p-2 text-center border-r border-slate-800 text-orange-400 font-medium">⚠️</td>
-                        <td data-col="5" class="p-2 text-center border-r border-slate-800 text-orange-400 font-medium">⚠️</td>
-                        <td data-col="6" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="7" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="8" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="9" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="10" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="11" class="p-2 text-center text-emerald-400 font-medium">✅</td>
-                    </tr>
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 font-semibold text-slate-100 sticky-col border-r border-slate-700">Qwen 3.0 Max</td>
-                        <td data-col="0" class="p-2 text-center border-r border-slate-800 font-mono text-amber-400">$</td>
-                        <td data-col="1" class="p-2 text-center border-r border-slate-800 font-mono">128K</td>
-                        <td data-col="2" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="3" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="4" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="5" class="p-2 text-center border-r border-slate-800 text-rose-500 font-medium">❌</td>
-                        <td data-col="6" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="7" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="8" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="9" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="10" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="11" class="p-2 text-center text-amber-400 font-medium">🟡</td>
-                    </tr>
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 font-semibold text-slate-100 sticky-col border-r border-slate-700">Perplexity Pro</td>
-                        <td data-col="0" class="p-2 text-center border-r border-slate-800 font-mono text-amber-400">$$</td>
-                        <td data-col="1" class="p-2 text-center border-r border-slate-800 font-mono">128K</td>
-                        <td data-col="2" class="p-2 text-center border-r border-slate-800 text-orange-400 font-medium">⚠️</td>
-                        <td data-col="3" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="4" class="p-2 text-center border-r border-slate-800 text-orange-400 font-medium">⚠️</td>
-                        <td data-col="5" class="p-2 text-center border-r border-slate-800 text-rose-500 font-medium">❌</td>
-                        <td data-col="6" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="7" class="p-2 text-center border-r border-slate-800 text-rose-500 font-medium">❌</td>
-                        <td data-col="8" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="9" class="p-2 text-center border-r border-slate-800 text-orange-400 font-medium">⚠️</td>
-                        <td data-col="10" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="11" class="p-2 text-center text-emerald-400 font-medium">✅</td>
-                    </tr>
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 font-semibold text-slate-100 sticky-col border-r border-slate-700">Mistral Large 3</td>
-                        <td data-col="0" class="p-2 text-center border-r border-slate-800 font-mono text-amber-400">$$$</td>
-                        <td data-col="1" class="p-2 text-center border-r border-slate-800 font-mono">128K</td>
-                        <td data-col="2" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="3" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="4" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="5" class="p-2 text-center border-r border-slate-800 text-rose-500 font-medium">❌</td>
-                        <td data-col="6" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="7" class="p-2 text-center border-r border-slate-800 text-rose-500 font-medium">❌</td>
-                        <td data-col="8" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="9" class="p-2 text-center border-r border-slate-800 text-emerald-400 font-medium">✅</td>
-                        <td data-col="10" class="p-2 text-center border-r border-slate-800 text-amber-400 font-medium">🟡</td>
-                        <td data-col="11" class="p-2 text-center text-orange-400 font-medium">⚠️</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <button id="toggleFilterBtn" class="btn active" onclick="toggleDuplicateColumns()">Показать все колонки</button>
     </div>
 
-    <script>
-        function filterUnique() {
-            const table = document.getElementById('matrix-table');
-            const rows = Array.from(table.querySelectorAll('tbody tr'));
-            const numCols = 12; 
-            
-            for (let c = 0; c < numCols; c++) {
-                let values = rows.map(r => r.querySelector(`[data-col="${c}"]`).textContent.trim());
-                let allEqual = values.every(v => v === values[0]);
-                
-                if (allEqual) {
-                    table.querySelectorAll(`[data-col="${c}"]`).forEach(el => el.classList.add('hidden'));
-                    let headerSub = table.querySelector(`thead tr:nth-child(2) th[data-col="${c}"]`);
-                    if(headerSub) headerSub.classList.add('hidden');
-                }
-            }
-            updateGroupHeaders();
-        }
+    <div class="table-wrapper">
+        <table id="aiTable">
+            <thead>
+                <!-- Фаза 1: Макро-группы -->
+                <tr class="super-header">
+                    <th colspan="3">Основное</th>
+                    <th colspan="2">Презентации</th>
+                    <th colspan="3">Изображения</th>
+                    <th colspan="5">Офисные документы и Аналитика</th>
+                    <th colspan="2">Экосистемы</th>
+                    <th colspan="2">Почта</th>
+                    <th colspan="2">Исследования</th>
+                    <th colspan="3">Документы и OCR</th>
+                    <th colspan="3">Мультимедиа и Встречи</th>
+                    <th colspan="4">Коммуникация и Контент</th>
+                    <th colspan="4">Агенты и Операционные Системы</th>
+                    <th colspan="3">Инфраструктура</th>
+                    <th colspan="2">Итоги</th>
+                </tr>
+                <!-- Фаза 2: Конкретные метрики -->
+                <tr class="sub-header">
+                    <th>Модель</th>
+                    <th>Стоимость</th>
+                    <th>Место</th>
+                    <th>Создание (PPTX/PDF)</th>
+                    <th>Редактирование PPTX</th>
+                    <th>Генерация</th>
+                    <th>Редактирование</th>
+                    <th>Текст на фото</th>
+                    <th>Чтение PDF</th>
+                    <th>Чтение DOCX</th>
+                    <th>Чтение XLSX</th>
+                    <th>Анализ Excel</th>
+                    <th>Диаграммы</th>
+                    <th>Word</th>
+                    <th>PowerPoint</th>
+                    <th>Excel</th>
+                    <th>MS 365</th>
+                    <th>Google Workspace</th>
+                    <th>Outlook</th>
+                    <th>Gmail</th>
+                    <th>Поиск</th>
+                    <th>Deep Research</th>
+                    <th>Большие доки</th>
+                    <th>OCR</th>
+                    <th>Рукопись</th>
+                    <th>Видео</th>
+                    <th>Аудио</th>
+                    <th>Протоколы встреч</th>
+                    <th>Переводы</th>
+                    <th>Письма</th>
+                    <th>Отчёты</th>
+                    <th>KPI и дашборды</th>
+                    <th>Автономность</th>
+                    <th>Windows</th>
+                    <th>macOS</th>
+                    <th>iPad</th>
+                    <th>Автоматизация</th>
+                    <th>API</th>
+                    <th>Командная работа</th>
+                    <th>Языки</th>
+                    <th>Скорость</th>
+                    <th>Надёжность</th>
+                    <th>Сильные стороны</th>
+                    <th>Слабые стороны</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Данные -->
+                <tr>
+                    <td><b>GPT-5.4 Pro / Thinking</b> (OpenAI)</td><td>$$$$$</td><td>1</td><td>🟡</td><td>🟡</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>✅</td><td>🟡</td><td>🟡</td><td>🟡</td><td>🟡</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>✅</td><td>Лидерство в рассуждении и Computer Use для Windows.</td><td>Высокая стоимость Pro-токенов.</td>
+                </tr>
+                <tr>
+                    <td><b>Claude Fable 5 / Opus 4.8</b> (Anthropic)</td><td>$$$$</td><td>2</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>❌</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>⚠️</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>✅</td><td>Эталонная генерация текста и работа со сложным кодом.</td><td>Отсутствие встроенной работы с изображениями.</td>
+                </tr>
+                <tr>
+                    <td><b>Gemini 3.5 Pro</b> (Google)</td><td>$$$</td><td>3</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>🟡</td><td>🟡</td><td>❌</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>Контекст 2 млн токенов, бесшовная экосистема Google.</td><td>Склонность к галлюцинациям в "длубоком поиске".</td>
+                </tr>
+                <tr>
+                    <td><b>Microsoft Copilot Studio</b></td><td>$$$$</td><td>4</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>❌</td><td>✅</td><td>🟡</td><td>🟡</td><td>✅</td><td>✅</td><td>⚠️</td><td>⚠️</td><td>🟡</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>✅</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>✅</td><td>Максимальная интеграция в MS Office 365 и безопасность.</td><td>Тяжеловесный корпоративный интерфейс.</td>
+                </tr>
+                <tr>
+                    <td><b>DeepSeek V4 / R1</b></td><td>$</td><td>5</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>🟡</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>❌</td><td>🟡</td><td>✅</td><td>✅</td><td>Минимальная цена при колоссальной логической мощности.</td><td>Нет нативной работы с медиафайлами и офисным софтом.</td>
+                </tr>
+                <tr>
+                    <td><b>Perplexity Pro (Enterprise)</b></td><td>$$$</td><td>6</td><td>🟡</td><td>❌</td><td>🟡</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>🟡</td><td>✅</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>🟡</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>✅</td><td>🟡</td><td>✅</td><td>✅</td><td>✅</td><td>Лучший инструмент для сквозного Deep Research и сбора источников.</td><td>Слабые агентские функции контроля приложений.</td>
+                </tr>
+                <tr>
+                    <td><b>Grok 4.3</b> (xAI)</td><td>$$$</td><td>7</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>🟡</td><td>⚠️</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>🟡</td><td>🟡</td><td>✅</td><td>🟡</td><td>✅</td><td>🟡</td><td>❌</td><td>✅</td><td>✅</td><td>🟡</td><td>❌</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>✅</td><td>❌</td><td>🟡</td><td>✅</td><td>🟡</td><td>Синхронизация со сведениями из X (Twitter) в реальном времени.</td><td>Минимум корпоративных плагинов безопасности.</td>
+                </tr>
+                <tr>
+                    <td><b>Qwen 3.7-Max</b> (Alibaba)</td><td>$$</td><td>8</td><td>❌</td><td>❌</td><td>🟡</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>🟡</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>⚠️</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>🟡</td><td>Экспертиза в азиатских цепочках поставок и торговле.</td><td>Трудности кастомизации под западные CRM.</td>
+                </tr>
+                <tr>
+                    <td><b>Llama 4 (400B)</b> (Meta)</td><td>$</td><td>9</td><td>❌</td><td>❌</td><td>✅</td><td>🟡</td><td>🟡</td><td>✅</td><td>✅</td><td>🟡</td><td>🟡</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>❌</td><td>🟡</td><td>✅</td><td>✅</td><td>🟡</td><td>🟡</td><td>❌</td><td>✅</td><td>✅</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>Полная приватность, развертывание внутри контура компании.</td><td>Высокие требования к собственным серверам.</td>
+                </tr>
+                <tr>
+                    <td><b>Mistral Large 3</b></td><td>$$</td><td>10</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>🟡</td><td>🟡</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>❌</td><td>🟡</td><td>✅</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>✅</td><td>🟡</td><td>✅</td><td>✅</td><td>✅</td><td>Строгое соответствие европейскому законодательству ИИ.</td><td>Уступает лидерам в комплексном многошаговом планировании.</td>
+                </tr>
+                <tr>
+                    <td><b>Amazon Bedrock Nova</b></td><td>$$$</td><td>11</td><td>❌</td><td>❌</td><td>🟡</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>🟡</td><td>⚠️</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>✅</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>🟡</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>✅</td><td>✅</td><td>🟡</td><td>✅</td><td>✅</td><td>Высочайшая отказоустойчивость инфраструктуры AWS.</td><td>Базовые модели уступают внешним интеграциям.</td>
+                </tr>
+                <tr>
+                    <td><b>Cohere Command R++ V2</b></td><td>$$</td><td>12</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>❌</td><td>🟡</td><td>✅</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>🟡</td><td>✅</td><td>✅</td><td>✅</td><td>Идеально для внутренних корпоративных баз знаний (RAG).</td><td>Отсутствие мультимедийных возможностей.</td>
+                </tr>
+                <tr>
+                    <td><b>GLM-5-Max</b> (Zhipu AI)</td><td>$$</td><td>13</td><td>❌</td><td>❌</td><td>✅</td><td>🟡</td><td>🟡</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>🟡</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>⚠️</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>🟡</td><td>🟡</td><td>Высокая точность в извлечении данных и таблицах.</td><td>Сложность трансграничных расчетов и поддержки.</td>
+                </tr>
+                <tr>
+                    <td><b>ERNIE 5.0</b> (Baidu)</td><td>$$</td><td>14</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>🟡</td><td>✅</td><td>✅</td><td>🟡</td><td>⚠️</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>🟡</td><td>✅</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>🟡</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>✅</td><td>❌</td><td>🟡</td><td>🟡</td><td>🟡</td><td>Глубокая локальная интеграция в сервисы КНР.</td><td>Избыточная цензура, слабый фокус на не-азиатские рынки.</td>
+                </tr>
+                <tr>
+                    <td><b>Hunyuan-Turbo 2</b></td><td>$$</td><td>15</td><td>❌</td><td>❌</td><td>🟡</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>🟡</td><td>⚠️</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>🟡</td><td>✅</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>🟡</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>✅</td><td>❌</td><td>🟡</td><td>🟡</td><td>🟡</td><td>Специализация на e-commerce сценариях и экосистеме WeChat.</td><td>Низкая полезность в качестве универсального офисного ИИ.</td>
+                </tr>
+                <tr>
+                    <td><b>Kimi K1 Pro</b></td><td>$$</td><td>16</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>🟡</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>🟡</td><td>✅</td><td>✅</td><td>🟡</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>🟡</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>🟡</td><td>✅</td><td>❌</td><td>🟡</td><td>🟡</td><td>✅</td><td>Стабильный разбор сверхдлинных текстовых цепочек.</td><td>Практически полное отсутствие агентной автономности.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-        function resetFilters() {
-            const table = document.getElementById('matrix-table');
-            table.querySelectorAll('[data-col]').forEach(el => el.classList.remove('hidden'));
-            table.querySelectorAll('thead th').forEach(el => el.classList.remove('hidden'));
-            updateGroupHeaders();
-        }
+<script>
+    function toggleDuplicateColumns() {
+        const table = document.getElementById('aiTable');
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        const subHeaderRow = table.querySelector('.sub-header');
+        const superHeaderRow = table.querySelector('.super-header');
+        const headers = Array.from(subHeaderRow.querySelectorAll('th'));
+        const btn = document.getElementById('toggleFilterBtn');
+        
+        const isFilteringActive = btn.classList.contains('active');
 
-        function updateGroupHeaders() {
-            const table = document.getElementById('matrix-table');
-            const groups = ['base', 'docs', 'office', 'images', 'agents', 'research'];
-            
-            groups.forEach(g => {
-                const th = table.querySelector(`thead th[data-group="${g}"]`);
-                if(!th) return;
-                
-                let subCols = [];
-                if (g === 'base') subCols = [0, 1];
-                else if (g === 'docs') subCols = [2, 3];
-                else if (g === 'office') subCols = [4, 5];
-                else if (g === 'images') subCols = [6, 7];
-                else if (g === 'agents') subCols = [8, 9];
-                else if (g === 'research') subCols = [10, 11];
-                
-                let visibleCount = 0;
-                subCols.forEach(c => {
-                    let subTh = table.querySelector(`thead tr:nth-child(2) th[data-col="${c}"]`);
-                    if (subTh && !subTh.classList.contains('hidden')) {
-                        visibleCount++;
-                    }
-                });
-                
-                if (visibleCount === 0) {
-                    th.classList.add('hidden');
-                } else {
-                    th.classList.remove('hidden');
-                    th.colSpan = visibleCount;
-                }
+        if (isFilteringActive) {
+            // Показываем абсолютно все колонки
+            headers.forEach((_, colIndex) => {
+                setColumnVisibility(table, colIndex, true);
             });
+            // Возвращаем super-header к исходному состоянию
+            Array.from(superHeaderRow.querySelectorAll('th')).forEach(th => th.style.display = '');
+            btn.textContent = "Скрыть одинаковые колонки";
+            btn.classList.remove('active');
+        } else {
+            // Запускаем скрытие дубликатов
+            applyDuplicateFilter();
         }
-    </script>
+    }
+
+    function setColumnVisibility(table, colIndex, visible) {
+        const displayValue = visible ? '' : 'none';
+        table.querySelector('.sub-header').querySelectorAll('th')[colIndex].style.display = displayValue;
+        
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const cell = row.querySelectorAll('td')[colIndex];
+            if (cell) cell.style.display = displayValue;
+        });
+    }
+
+    function applyDuplicateFilter() {
+        const table = document.getElementById('aiTable');
+        const subHeaderRow = table.querySelector('.sub-header');
+        const headers = Array.from(subHeaderRow.querySelectorAll('th'));
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        const btn = document.getElementById('toggleFilterBtn');
+        const superHeaderRow = table.querySelector('.super-header');
+
+        // Индексы колонок, которые НИКОГДА нельзя скрывать (Модель, Стоимость, Место, Сильные/Слабые стороны)
+        const protectedIndexes = [0, 1, 2, headers.length - 2, headers.length - 1];
+
+        headers.forEach((_, colIndex) => {
+            if (protectedIndexes.includes(colIndex)) return;
+
+            let firstValue = rows[0].querySelectorAll('td')[colIndex].textContent.trim();
+            let isIdentical = rows.every(row => {
+                return row.querySelectorAll('td')[colIndex].textContent.trim() === firstValue;
+            });
+
+            if (isIdentical) {
+                setColumnVisibility(table, colIndex, false);
+            }
+        });
+
+        // Скрываем верхнюю укрупненную шапку, так как структура нарушается при фильтрации
+        Array.from(superHeaderRow.querySelectorAll('th')).forEach(th => th.style.display = 'none');
+
+        btn.textContent = "Показать все колонки";
+        btn.classList.add('active');
+    }
+
+    // Инициализация фильтра по умолчанию при загрузке
+    window.onload = function() {
+        applyDuplicateFilter();
+    };
+</script>
+
 </body>
 </html>
