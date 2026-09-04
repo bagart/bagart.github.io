@@ -25,6 +25,22 @@
             --nav-h: 62px;
         }
 
+        [data-theme="light"] {
+            --bg: #e8e6e1;
+            --surface: rgba(0, 0, 0, 0.03);
+            --surface-hover: rgba(0, 0, 0, 0.05);
+            --border: rgba(0, 0, 0, 0.07);
+            --border-hover: rgba(99, 102, 241, 0.4);
+            --primary: #5b54c8;
+            --primary-dim: rgba(91, 84, 200, 0.1);
+            --primary-glow: rgba(91, 84, 200, 0.3);
+            --cyan: #0e839e;
+            --cyan-dim: rgba(14, 131, 158, 0.08);
+            --purple: #7e44c2;
+            --text: #2c2c3a;
+            --muted: #7a7a8c;
+        }
+
         *, *::before, *::after {
             margin: 0;
             padding: 0;
@@ -104,6 +120,26 @@
             box-shadow: 0 4px 40px rgba(0, 0, 0, 0.35);
         }
 
+        [data-theme="light"] nav.scrolled {
+            background: rgba(232, 230, 225, 0.88);
+            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="light"] .bg-canvas {
+            background: radial-gradient(ellipse 80% 100% at 10% 20%, rgba(91, 84, 200, 0.06) 0%, transparent 50%),
+            radial-gradient(ellipse 60% 80% at 92% 15%, rgba(126, 68, 194, 0.04) 0%, transparent 50%),
+            radial-gradient(ellipse 50% 60% at 80% 85%, rgba(14, 131, 158, 0.03) 0%, transparent 50%);
+        }
+
+        [data-theme="light"] .bg-grid {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.025) 1px, transparent 1px);
+        }
+
+        [data-theme="light"] ::-webkit-scrollbar-track {
+            background: #ddd9d4;
+        }
+
         .nav-logo {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1.35rem;
@@ -177,6 +213,32 @@
         .lang-btn.active {
             background: var(--primary);
             color: #fff;
+        }
+
+        .theme-toggle {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            border-color: var(--primary);
+        }
+
+        [data-theme="light"] .theme-toggle:hover {
+            background: rgba(0, 0, 0, 0.06);
         }
 
         /* ── SECTIONS (Full-page slides) ── */
@@ -1170,6 +1232,14 @@
             transition: all 0.25s;
         }
 
+        [data-theme="light"] .slide-arrows button {
+            background: rgba(232, 230, 225, 0.85);
+        }
+
+        [data-theme="light"] .theme-toggle:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
         .slide-arrows button:hover {
             color: var(--primary);
             border-color: var(--primary);
@@ -1232,6 +1302,10 @@
             border-radius: 3px;
         }
 
+        [data-theme="light"] ::-webkit-scrollbar-track {
+            background: #f0f0f2;
+        }
+
         @media (max-width: 760px) {
             nav {
                 padding: 0 1rem;
@@ -1284,11 +1358,198 @@
                 display: none;
             }
         }
+
+        /* ── STARFIELD CANVAS ── */
+        #starfield {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        [data-theme="light"] #starfield {
+            opacity: 0.15;
+        }
+
+        /* ── GALAXY SECTION (end — OpenAI Astra style) ── */
+        .galaxy-section {
+            position: relative;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            max-width: none;
+            height: 100vh;
+            min-height: 600px;
+            background: #0b0d10;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            padding: 0;
+        }
+
+        .galaxy-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .galaxy-veil {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 90% 60% at 50% 110%, rgba(232, 178, 90, 0.08) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 45% at 50% 42%, transparent 40%, rgba(11, 13, 16, 0.7) 80%);
+            pointer-events: none;
+        }
+
+        .galaxy-text {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .galaxy-kicker {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #e8b25a;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: galaxy-reveal 1s 0.3s cubic-bezier(.22,.8,.24,1) forwards;
+        }
+
+        .galaxy-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: clamp(3.5rem, 15vw, 12rem);
+            line-height: 0.94;
+            letter-spacing: 0.055em;
+            background: linear-gradient(180deg, #f5f1e6 30%, #cbbf9f 58%, #7d7461 82%, #3d3a33);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 90px rgba(232, 178, 90, 0.12);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: galaxy-reveal 1s 0.5s cubic-bezier(.22,.8,.24,1) forwards;
+        }
+
+        .galaxy-sub {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            line-height: 1.55;
+            color: #b9b3a6;
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: galaxy-reveal 1s 0.7s cubic-bezier(.22,.8,.24,1) forwards;
+        }
+
+        .galaxy-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: galaxy-reveal 1s 0.9s cubic-bezier(.22,.8,.24,1) forwards;
+        }
+
+        .galaxy-chips li {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.04em;
+            color: #b9b3a6;
+            border: 1px solid rgba(236, 231, 221, 0.14);
+            border-radius: 999px;
+            padding: 8px 16px;
+            background: rgba(236, 231, 221, 0.03);
+            backdrop-filter: blur(4px);
+        }
+
+        .galaxy-chips b {
+            color: #e8b25a;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .galaxy-cta {
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border: 1px solid rgba(236, 231, 221, 0.18);
+            border-radius: 12px;
+            background: rgba(2, 6, 23, 0.5);
+            color: #ece7dd;
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+            transition: all 0.3s cubic-bezier(.22,.8,.24,1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: galaxy-reveal 1s 1.1s cubic-bezier(.22,.8,.24,1) forwards;
+        }
+
+        .galaxy-cta:hover {
+            background: linear-gradient(135deg, #e8b25a, #a78bfa);
+            color: #07111f;
+            border-color: transparent;
+            box-shadow: 0 8px 22px rgba(232, 178, 90, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .galaxy-cue {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #8d8779;
+            text-decoration: none;
+            opacity: 0;
+            animation: galaxy-reveal 1s 1.4s cubic-bezier(.22,.8,.24,1) forwards;
+        }
+
+        .galaxy-cue svg {
+            animation: cue-bob 2.2s cubic-bezier(.22,.8,.24,1) infinite;
+        }
+
+        @keyframes cue-bob {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(7px); opacity: 1; }
+        }
+
+        @keyframes galaxy-reveal {
+            to { opacity: 1; transform: none; }
+        }
     </style>
     <script src="./config.js"></script>
 </head>
 <body>
 
+<canvas id="starfield"></canvas>
 <div class="bg-canvas"></div>
 <div class="bg-grid"></div>
 <div id="scroll-bar"></div>
@@ -1306,6 +1567,7 @@
     <a href="#experience" aria-label="Experience"></a>
     <a href="#education" aria-label="Education"></a>
     <a href="#projects" aria-label="Projects"></a>
+    <a href="#galaxy" aria-label="Galaxy"></a>
 </nav>
 
 <!-- ═══════════ NAV ═══════════ -->
@@ -1327,8 +1589,12 @@
         <a href="#projects">
             <span class="l-en">Projects</span><span class="l-ru" style="display:none">Проекты</span>
         </a>
+        <a href="#galaxy">
+            <span class="l-en">Galaxy</span><span class="l-ru" style="display:none">Галактика</span>
+        </a>
     </div>
     <div class="nav-right">
+        <button class="theme-toggle" id="theme-toggle" title="Toggle theme">🌙</button>
         <div class="lang-switch">
             <button class="lang-btn active" data-lang="en">EN</button>
             <button class="lang-btn" data-lang="ru">RU</button>
@@ -2321,6 +2587,35 @@
     </div><!-- /slide-inner -->
 </section>
 
+<!-- ═══════════ GALAXY ═══════════ -->
+<section class="galaxy-section slide" id="galaxy" style="scroll-snap-align: start; scroll-snap-stop: always;">
+    <canvas class="galaxy-canvas" id="galaxy-canvas"></canvas>
+    <div class="galaxy-veil"></div>
+    <div class="galaxy-text">
+        <p class="galaxy-kicker">Architect Web Developer · Senior Full-Stack Engineer</p>
+        <h1 class="galaxy-name">Artur<br>Baltaev</h1>
+        <p class="galaxy-sub">
+            SRE · DBA · High-Traffic · Big-Data · International<br>
+            <span style="color:#8d8779;">Remote contractor · Open to relocate</span>
+        </p>
+        <ul class="galaxy-chips">
+            <li><b>16+</b> years in production</li>
+            <li><b>9</b> companies shipped</li>
+            <li><b>5</b> countries delivered</li>
+        </ul>
+        <a href="mailto:Baltaev.Artur@gmail.com" class="galaxy-cta">
+            <span class="l-en">Let's build something</span>
+            <span class="l-ru" style="display:none">Давайте создадим что-то</span>
+        </a>
+    </div>
+    <a class="galaxy-cue" href="#hero">
+        <span>Back to top</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path d="M12 20V6m0 0l-6 6m6-6l6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</section>
+
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer>
     <span class="l-en">Built by </span><span class="l-ru" style="display:none">Создано </span>
@@ -2424,7 +2719,7 @@
     }
 
     /* ── Slide navigation: keyboard + prev/next ── */
-    const slideIds = ['hero', 'skills', 'experience', 'education', 'projects'];
+    const slideIds = ['hero', 'skills', 'experience', 'education', 'projects', 'galaxy'];
 
     function getCurrentSlideIndex() {
         const y = window.scrollY;
@@ -2453,6 +2748,12 @@
         } else if (['ArrowUp', 'ArrowLeft'].includes(e.key)) {
             e.preventDefault();
             goToSlide(getCurrentSlideIndex() - 1);
+        } else if (e.key === 'Home') {
+            e.preventDefault();
+            goToSlide(0);
+        } else if (e.key === 'End') {
+            e.preventDefault();
+            goToSlide(slideIds.length - 1);
         }
     });
 
@@ -2464,6 +2765,316 @@
     };
     window.addEventListener('scroll', updateSlideNav, { passive: true });
     updateSlideNav();
+
+    /* ── Theme Toggle ── */
+    const themeToggle = document.getElementById('theme-toggle');
+    let theme = localStorage.getItem('ab-theme') || 'dark';
+
+    function applyTheme(t) {
+        theme = t;
+        localStorage.setItem('ab-theme', t);
+        document.documentElement.setAttribute('data-theme', t);
+        themeToggle.textContent = t === 'dark' ? '🌙' : '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+        applyTheme(theme === 'dark' ? 'light' : 'dark');
+    });
+
+    applyTheme(theme);
+
+    /* ── Full-page Starfield (canvas) ── */
+    const sfCanvas = document.getElementById('starfield');
+    const sfCtx = sfCanvas.getContext('2d');
+    let sfW, sfH;
+    const sfStars = [];
+    const SF_COUNT = 220;
+    let mouseX = 0, mouseY = 0;
+
+    function resizeStarfield() {
+        sfW = sfCanvas.width = window.innerWidth;
+        sfH = sfCanvas.height = window.innerHeight;
+    }
+
+    function initStarfield() {
+        resizeStarfield();
+        sfStars.length = 0;
+        for (let i = 0; i < SF_COUNT; i++) {
+            sfStars.push({
+                x: Math.random() * sfW,
+                y: Math.random() * sfH,
+                r: Math.random() * 1.5 + 0.3,
+                depth: Math.random() * 3 + 1,
+                alpha: Math.random() * 0.7 + 0.3,
+                twinkleSpeed: Math.random() * 0.02 + 0.005,
+                twinklePhase: Math.random() * Math.PI * 2
+            });
+        }
+    }
+
+    function drawStarfield(t) {
+        sfCtx.clearRect(0, 0, sfW, sfH);
+        const px = (mouseX - sfW / 2);
+        const py = (mouseY - sfH / 2);
+
+        for (const s of sfStars) {
+            const parallaxX = px / s.depth * 0.3;
+            const parallaxY = py / s.depth * 0.3;
+            const sx = s.x + parallaxX;
+            const sy = s.y + parallaxY;
+            const twinkle = Math.sin(t * s.twinkleSpeed + s.twinklePhase) * 0.3 + 0.7;
+
+            sfCtx.beginPath();
+            sfCtx.arc(sx, sy, s.r, 0, Math.PI * 2);
+            sfCtx.fillStyle = `rgba(255,255,255,${s.alpha * twinkle})`;
+            sfCtx.fill();
+        }
+        requestAnimationFrame(drawStarfield);
+    }
+
+    window.addEventListener('resize', resizeStarfield);
+    window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; }, { passive: true });
+
+    initStarfield();
+    requestAnimationFrame(drawStarfield);
+
+    /* ── Interactive Galaxy (end section — Astra style) ── */
+    const gCanvas = document.getElementById('galaxy-canvas');
+    const gCtx = gCanvas.getContext('2d');
+    let gW, gH, gCx, gCy, gMaxR;
+    let gMouseX = 0, gMouseY = 0;
+    let gMouseActive = false;
+    const arms = [];
+    const bgStars = [];
+
+    const ARM_COUNT = 5;
+    const STARS_PER_ARM = 320;
+    const BG_COUNT = 600;
+
+    const armConfigs = [
+        { speed: 0.00012, tightness: 0.0072, spread: 22, offset: 0 },
+        { speed: 0.00009, tightness: 0.0065, spread: 26, offset: 1.26 },
+        { speed: 0.00015, tightness: 0.008, spread: 18, offset: 2.51 },
+        { speed: 0.00007, tightness: 0.0058, spread: 30, offset: 3.77 },
+        { speed: 0.00011, tightness: 0.007, spread: 24, offset: 5.03 },
+    ];
+
+    function resizeGalaxy() {
+        const rect = gCanvas.parentElement.getBoundingClientRect();
+        gW = gCanvas.width = rect.width;
+        gH = gCanvas.height = rect.height;
+        gCx = gW / 2;
+        gCy = gH / 2;
+        gMaxR = Math.min(gW, gH) * 0.46;
+    }
+
+    function initGalaxy() {
+        resizeGalaxy();
+        arms.length = 0;
+        bgStars.length = 0;
+
+        for (let a = 0; a < ARM_COUNT; a++) {
+            const cfg = armConfigs[a % armConfigs.length];
+            const stars = [];
+            for (let i = 0; i < STARS_PER_ARM; i++) {
+                const t = Math.pow(i / STARS_PER_ARM, 0.7);
+                const dist = t * gMaxR;
+                const spreadFalloff = 1 - t * 0.5;
+                const jitterR = (Math.random() - 0.5) * cfg.spread * spreadFalloff;
+                const jitterA = (Math.random() - 0.5) * 0.35 * spreadFalloff;
+
+                const sizeRoll = Math.random();
+                let r;
+                if (sizeRoll < 0.5) r = Math.random() * 0.8 + 0.15;
+                else if (sizeRoll < 0.82) r = Math.random() * 1.4 + 0.5;
+                else if (sizeRoll < 0.95) r = Math.random() * 2.0 + 1.0;
+                else r = Math.random() * 2.8 + 1.8;
+
+                const cRoll = Math.random();
+                let hue, sat, light;
+                if (cRoll < 0.45) {
+                    hue = 35 + Math.random() * 25;
+                    sat = 70 + Math.random() * 25;
+                    light = 80 + Math.random() * 18;
+                } else if (cRoll < 0.75) {
+                    hue = 210 + Math.random() * 30;
+                    sat = 50 + Math.random() * 30;
+                    light = 82 + Math.random() * 16;
+                } else {
+                    hue = 15 + Math.random() * 20;
+                    sat = 80 + Math.random() * 20;
+                    light = 75 + Math.random() * 20;
+                }
+
+                stars.push({
+                    dist, jitterR, jitterA, r,
+                    alpha: r > 2 ? Math.random() * 0.4 + 0.6 : r > 1 ? Math.random() * 0.5 + 0.4 : Math.random() * 0.6 + 0.3,
+                    hue, sat, light,
+                    twinkleSpeed: Math.random() * 0.015 + 0.003,
+                    twinklePhase: Math.random() * Math.PI * 2,
+                    vx: 0, vy: 0
+                });
+            }
+            arms.push({ cfg, stars, currentAngle: cfg.offset });
+        }
+
+        for (let i = 0; i < BG_COUNT; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const dist = Math.pow(Math.random(), 0.5) * gMaxR * 1.4;
+            bgStars.push({
+                baseAngle: angle, dist,
+                r: Math.random() * 0.7 + 0.1,
+                alpha: Math.random() * 0.35 + 0.1,
+                hue: 30 + Math.random() * 30,
+                sat: 20 + Math.random() * 30,
+                light: 70 + Math.random() * 25,
+                twinkleSpeed: Math.random() * 0.006 + 0.001,
+                twinklePhase: Math.random() * Math.PI * 2
+            });
+        }
+    }
+
+    function drawStar(x, y, r, alpha, hue, sat, light, twinkle) {
+        const a = alpha * twinkle;
+
+        if (r > 1.8) {
+            gCtx.beginPath();
+            gCtx.moveTo(x - r * 5, y);
+            gCtx.lineTo(x + r * 5, y);
+            gCtx.moveTo(x, y - r * 5);
+            gCtx.lineTo(x, y + r * 5);
+            gCtx.strokeStyle = `hsla(${hue}, ${sat}%, ${light}%, ${a * 0.12})`;
+            gCtx.lineWidth = 0.5;
+            gCtx.stroke();
+        }
+
+        if (r > 1.0) {
+            const glowR = r * (r > 2.5 ? 8 : 5);
+            const glow = gCtx.createRadialGradient(x, y, 0, x, y, glowR);
+            glow.addColorStop(0, `hsla(${hue}, ${sat}%, ${light}%, ${a * 0.25})`);
+            glow.addColorStop(0.3, `hsla(${hue}, ${sat}%, ${light}%, ${a * 0.08})`);
+            glow.addColorStop(1, 'transparent');
+            gCtx.fillStyle = glow;
+            gCtx.beginPath();
+            gCtx.arc(x, y, glowR, 0, Math.PI * 2);
+            gCtx.fill();
+        }
+
+        gCtx.beginPath();
+        gCtx.arc(x, y, r, 0, Math.PI * 2);
+        gCtx.fillStyle = `hsla(${hue}, ${sat}%, ${light}%, ${a})`;
+        gCtx.fill();
+    }
+
+    function drawGalaxy(t) {
+        gCtx.clearRect(0, 0, gW, gH);
+
+        const neb1 = gCtx.createRadialGradient(gCx - gW * 0.06, gCy - gH * 0.04, 0, gCx - gW * 0.06, gCy - gH * 0.04, gMaxR * 0.85);
+        neb1.addColorStop(0, 'rgba(232,178,90,0.09)');
+        neb1.addColorStop(1, 'transparent');
+        gCtx.fillStyle = neb1;
+        gCtx.fillRect(0, 0, gW, gH);
+
+        const neb2 = gCtx.createRadialGradient(gCx + gW * 0.08, gCy + gH * 0.06, 0, gCx + gW * 0.08, gCy + gH * 0.06, gMaxR * 0.7);
+        neb2.addColorStop(0, 'rgba(140,120,200,0.06)');
+        neb2.addColorStop(1, 'transparent');
+        gCtx.fillStyle = neb2;
+        gCtx.fillRect(0, 0, gW, gH);
+
+        for (const s of bgStars) {
+            const x = gCx + Math.cos(s.baseAngle) * s.dist;
+            const y = gCy + Math.sin(s.baseAngle) * s.dist;
+            const tw = Math.sin(t * s.twinkleSpeed + s.twinklePhase) * 0.3 + 0.7;
+            gCtx.beginPath();
+            gCtx.arc(x, y, s.r, 0, Math.PI * 2);
+            gCtx.fillStyle = `hsla(${s.hue}, ${s.sat}%, ${s.light}%, ${s.alpha * tw})`;
+            gCtx.fill();
+        }
+
+        let mouseAngleSpeed = 0;
+        if (gMouseActive) {
+            const mdx = gMouseX - gCx;
+            const mdy = gMouseY - gCy;
+            mouseAngleSpeed = (mdx * 0.0000008) + (mdy * 0.0000004);
+        }
+
+        for (const arm of arms) {
+            arm.currentAngle += arm.cfg.speed + mouseAngleSpeed;
+
+            for (const star of arm.stars) {
+                const a = arm.currentAngle + star.jitterA;
+                const baseAngle = a + star.dist * arm.cfg.tightness;
+                const r = star.dist + star.jitterR;
+
+                let sx = gCx + Math.cos(baseAngle) * r;
+                let sy = gCy + Math.sin(baseAngle) * r;
+
+                if (gMouseActive) {
+                    const dx = sx - gMouseX;
+                    const dy = sy - gMouseY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const radius = 200;
+                    if (dist < radius && dist > 1) {
+                        const force = Math.pow(1 - dist / radius, 2) * 4;
+                        sx += dx / dist * force * star.r * 4;
+                        sy += dy / dist * force * star.r * 4;
+                    }
+                }
+
+                const tw = Math.sin(t * star.twinkleSpeed + star.twinklePhase) * 0.3 + 0.7;
+                drawStar(sx, sy, star.r, star.alpha, star.hue, star.sat, star.light, tw);
+            }
+        }
+
+        const coreR = gMaxR * 0.08;
+        const coreGlow = gCtx.createRadialGradient(gCx, gCy, 0, gCx, gCy, coreR * 6);
+        coreGlow.addColorStop(0, 'rgba(255,255,245,0.4)');
+        coreGlow.addColorStop(0.15, 'rgba(255,250,235,0.25)');
+        coreGlow.addColorStop(0.4, 'rgba(232,178,90,0.12)');
+        coreGlow.addColorStop(0.7, 'rgba(232,178,90,0.04)');
+        coreGlow.addColorStop(1, 'transparent');
+        gCtx.fillStyle = coreGlow;
+        gCtx.beginPath();
+        gCtx.arc(gCx, gCy, coreR * 6, 0, Math.PI * 2);
+        gCtx.fill();
+
+        const coreBright = gCtx.createRadialGradient(gCx, gCy, 0, gCx, gCy, coreR * 2);
+        coreBright.addColorStop(0, 'rgba(255,255,255,0.7)');
+        coreBright.addColorStop(0.3, 'rgba(255,252,240,0.35)');
+        coreBright.addColorStop(1, 'transparent');
+        gCtx.fillStyle = coreBright;
+        gCtx.beginPath();
+        gCtx.arc(gCx, gCy, coreR * 2, 0, Math.PI * 2);
+        gCtx.fill();
+
+        const coreDot = gCtx.createRadialGradient(gCx, gCy, 0, gCx, gCy, coreR * 0.5);
+        coreDot.addColorStop(0, 'rgba(255,255,255,1)');
+        coreDot.addColorStop(0.5, 'rgba(255,255,250,0.6)');
+        coreDot.addColorStop(1, 'transparent');
+        gCtx.fillStyle = coreDot;
+        gCtx.beginPath();
+        gCtx.arc(gCx, gCy, coreR * 0.5, 0, Math.PI * 2);
+        gCtx.fill();
+
+        requestAnimationFrame(drawGalaxy);
+    }
+
+    const galaxySection = document.getElementById('galaxy');
+    galaxySection.addEventListener('mousemove', e => {
+        const rect = gCanvas.getBoundingClientRect();
+        gMouseX = e.clientX - rect.left;
+        gMouseY = e.clientY - rect.top;
+        gMouseActive = true;
+    }, { passive: true });
+
+    galaxySection.addEventListener('mouseleave', () => { gMouseActive = false; });
+
+    window.addEventListener('resize', () => { resizeGalaxy(); });
+    const galaxyObserver = new ResizeObserver(() => resizeGalaxy());
+    galaxyObserver.observe(galaxySection);
+
+    initGalaxy();
+    requestAnimationFrame(drawGalaxy);
 </script>
 </body>
 </html>
